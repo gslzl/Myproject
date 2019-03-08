@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import permissions.dispatcher.NeedsPermission;
+
 
 public class HomepageActivity extends AppCompatActivity implements MenuListener,View.OnClickListener {
 
@@ -144,7 +144,6 @@ public class HomepageActivity extends AppCompatActivity implements MenuListener,
 
     }
 
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public void openAlbum() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("image/*");
