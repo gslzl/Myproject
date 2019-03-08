@@ -9,6 +9,7 @@ import com.lzy.okgo.OkGo;
 public class MyApp extends Application {
 
 
+    
     public static final String UPLOAD_AVATAR_URL="http://120.79.87.68:5000/finalAvatarUri";
     @Override
     public void onCreate() {
