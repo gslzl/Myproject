@@ -15,6 +15,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,7 @@ import com.jpeng.jpspringmenu.SpringMenu;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.example.myproject.adapter.ProductRecycviewAdapter;
 import com.recker.flybanner.FlyBanner;
 
 import java.io.File;
@@ -67,6 +70,8 @@ public class HomeFragment extends Fragment implements MenuListener, View.OnClick
     List<String> imgesUrl = new ArrayList<>();
     List<String> imgesID = new ArrayList<>();
     FlyBanner banner;
+
+    RecyclerView product;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -112,9 +117,19 @@ public class HomeFragment extends Fragment implements MenuListener, View.OnClick
             }
         });
 //        initBanner();
+        product = view.findViewById(R.id.product);
 
+        ArrayList list = new ArrayList();
+        for (int i = 0; i < 10; i++) {
+            list.add(i+"");
+        }
+
+        ProductRecycviewAdapter mproduct = new ProductRecycviewAdapter(list);
+        product.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        product.setAdapter(mproduct);
         return view;
     }
+
 
 
     private void initBanner() {
