@@ -11,7 +11,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
-                includeCompileClasspath = true;
+                includeCompileClasspath = true
             }
         }
     }
@@ -39,9 +39,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:5.1.1'
     implementation 'com.recker.flybanner:flybanner:1.3'
     implementation 'com.jpeng:jpspringmenu:1.0.3'
-    implementation "org.permissionsdispatcher:permissionsdispatcher:4.3.0"
-
-    annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:4.3.0"
-
     implementation 'de.hdodenhof:circleimageview:3.0.0'
 }

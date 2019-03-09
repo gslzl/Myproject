@@ -10,7 +10,6 @@ public class GuideActivity extends AppCompatActivity {
 
     private final int SPLASH_DISPLAY_LENGTH = 1000;  //延迟3秒
 
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
