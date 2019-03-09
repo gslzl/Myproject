@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="78dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/textsize"
         android:hint="手机号"
         android:inputType="phone" />
@@ -26,11 +26,11 @@
 
     <Button
         android:id="@+id/btn_getchecknumber"
-        android:layout_width="157dp"
-        android:layout_height="58dp"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="35dp"
         android:layout_marginRight="0dp"
         android:background="@color/colorAccent"
         android:fontFamily="@font/textsize"
@@ -77,8 +77,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="0dp"
             android:background="@drawable/color_selector"
-            android:textSize="40dp"
+            android:textSize="30dp"
             android:fontFamily="@font/textsize"
-            android:text="注            册"
+            android:text="注  册"
             android:textColor="@color/white"/>
 </RelativeLayout>
