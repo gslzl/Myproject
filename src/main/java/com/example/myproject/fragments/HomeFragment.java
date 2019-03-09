@@ -3,18 +3,18 @@ package com.example.myproject.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.myproject.R;
+import com.example.myproject.adapter.ProductRecycviewAdapter;
 import com.recker.flybanner.FlyBanner;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +28,8 @@ public class HomeFragment extends Fragment {
     List<String> imgesID = new ArrayList<>();
     FlyBanner banner;
 
+    RecyclerView product;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -40,6 +42,16 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         banner = view.findViewById(R.id.banner);
 //        initBanner();
+        product = view.findViewById(R.id.product);
+
+        ArrayList list = new ArrayList();
+        for (int i = 0; i < 10; i++) {
+            list.add(i+"");
+        }
+
+        ProductRecycviewAdapter mproduct = new ProductRecycviewAdapter(list);
+        product.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        product.setAdapter(mproduct);
         return view;
     }
 
