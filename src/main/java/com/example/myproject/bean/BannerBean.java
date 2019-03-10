@@ -38,11 +38,20 @@ public class BannerBean implements Serializable {
         public String name;
         public String user_ID;
         public String picture;
+        public String person_number;
         public String information;
         public String star_price;
         public String current_price;
         public String time;
         public String state;
+
+        public String getPerson_number() {
+            return person_number;
+        }
+
+        public void setPerson_number(String person_number) {
+            this.person_number = person_number;
+        }
 
         public String getID() {
             return ID;

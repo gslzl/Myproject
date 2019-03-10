@@ -37,14 +37,17 @@
             android:layout_height="match_parent">
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
             app:cardElevation="20dp">
-
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <android.support.v4.widget.NestedScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                >
+                android:id="@+id/nest_sv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
                 <LinearLayout
                     android:id="@+id/hot_search"
                     android:layout_width="match_parent"
@@ -56,16 +59,17 @@
                         android:layout_height="200dp"
                         android:clickable="true">
                     </com.recker.flybanner.FlyBanner>
-                    <include layout="@layout/category" />
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/product"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="70dp">
-                    </android.support.v7.widget.RecyclerView>
+                    <include layout="@layout/activity_category" />
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/product"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="70dp">
+                        </android.support.v7.widget.RecyclerView>
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
         </android.support.v7.widget.CardView>
         </FrameLayout>
     </LinearLayout>
