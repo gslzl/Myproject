@@ -1,16 +1,30 @@
 package com.example.myproject.fragments;
 
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.myproject.R;
-import com.example.myproject.adapter.ProductRecycviewAdapter;
+import com.example.myproject.adapter.BrvahAdapter;
+import com.example.myproject.adapter.SpaceItem;
+import com.example.myproject.bean.BannerBean;
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.recker.flybanner.FlyBanner;
 
 import java.util.ArrayList;
@@ -20,70 +34,117 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
+
     View view;
     String getUrl;
     String inforUrl;
-
+    int i=0;
     List<String> imgesUrl = new ArrayList<>();
     List<String> imgesID = new ArrayList<>();
+
     FlyBanner banner;
-
     RecyclerView product;
+    BrvahAdapter madapter;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    NestedScrollView nestedScrollView;
+    List<BannerBean.bannerBean> bannerBeans = new ArrayList<>();
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
         banner = view.findViewById(R.id.banner);
-//        initBanner();
         product = view.findViewById(R.id.product);
+        product.setNestedScrollingEnabled(false);
+        nestedScrollView = view.findViewById(R.id.nest_sv);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
-        ArrayList list = new ArrayList();
-        for (int i = 0; i < 10; i++) {
-            list.add(i+"");
-        }
-
-        ProductRecycviewAdapter mproduct = new ProductRecycviewAdapter(list);
+        SpaceItem spaceItem = new SpaceItem(15);
+        product.addItemDecoration(spaceItem);
+        madapter = new BrvahAdapter(R.layout.layout_product,bannerBeans,getActivity());
         product.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
-        product.setAdapter(mproduct);
+        product.setAdapter(madapter);
+
+        //        initBanner();
+        initProduct();
+        mSwipeRefreshLayout.setColorSchemeColors(Color.rgb(47, 223, 189));
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initProduct();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                },2000);
+            }
+        });
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView nestedScrollView, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == (nestedScrollView.getChildAt(0).getMeasuredHeight() - nestedScrollView.getMeasuredHeight())) {
+                    i=i+1;
+                    initProduct();
+
+                }
+            }
+        });
+
         return view;
     }
 
-//    private void initBanner() {
-//        getUrl = "http://120.79.87.68:5000/getBanner";
-//        inforUrl = "http://120.79.87.68:5000/getProduct";
-//        OkGo.get(getUrl)
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onSuccess(String s, Call call, Response response) {
-//                        BannerBean bannerBean = new Gson().fromJson(s, BannerBean.class);
-//                        for (BannerBean.bannerBean element : bannerBean.getData()) {
-//                            imgesUrl.add(element.getPicture());
-//                            imgesID.add(element.getID());
-//                        }
-//                        banner.setImagesUrl(imgesUrl);
-//                    }
-//                });
-//        banner.setOnItemClickListener(new FlyBanner.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(int position) {
-//                OkGo.post(inforUrl)
-//                        .params("ID", imgesID.get(position))
-//                        .execute(new StringCallback() {
-//                            @Override
-//                            public void onSuccess(String s, Call call, Response response) {
-//                                LogUtils.i(s);
-//                            }
-//                        });
-//            }
-//        });
-//    }
+    private void initProduct() {
+            inforUrl = "http://120.79.87.68:5000/getPageProduct";
+            OkGo.<String>post(inforUrl)
+                    .params("page",i)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
+                            BannerBean showproduct = new Gson().fromJson(response.body(),BannerBean.class);
+                            if (showproduct.getData()==null) {
+                                ToastUtils.showShort("没有更多数据了");
+                                return;
+                            }
+                            bannerBeans.addAll(showproduct.getData());
+                            madapter.setNewData(bannerBeans);
+                            LogUtils.i(showproduct.getData());
+                        }
+                    });
+    }
+
+    private void initBanner() {
+        getUrl = "http://120.79.87.68:5000/getBanner";
+        inforUrl = "http://120.79.87.68:5000/getProduct";
+        OkGo.<String>get(getUrl)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        BannerBean bannerBean = new Gson().fromJson(response.body(), BannerBean.class);
+                        for (BannerBean.bannerBean element : bannerBean.getData()) {
+                            imgesUrl.add(element.getPicture());
+                            imgesID.add(element.getID());
+                        }
+                        banner.setImagesUrl(imgesUrl);
+                    }
+                });
+        banner.setOnItemClickListener(new FlyBanner.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                OkGo.<String>post(inforUrl)
+                        .params("ID", imgesID.get(position))
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                LogUtils.i(response.body());
+                            }
+                        });
+            }
+        });
+    }
 
     @Override
     public void onDestroyView() {
