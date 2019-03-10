@@ -1,6 +1,7 @@
 package com.example.myproject.fragments;
 
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,9 +33,13 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
+
+import com.example.myproject.HomepageActivity;
+import com.example.myproject.MyApp;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,6 +60,7 @@ public class HomeFragment extends Fragment {
     String inforUrl;
     String infor;
     int i;
+
     CircleImageView entranceAvatar;
 
     List<String> imgesUrl = new ArrayList<>();
@@ -89,6 +95,7 @@ public class HomeFragment extends Fragment {
     ImageView Vt;
 
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -105,7 +112,6 @@ public class HomeFragment extends Fragment {
                 homepageActivity.openMenu();
             }
         });
-//        initBanner();
         product = view.findViewById(R.id.product);
         product.setNestedScrollingEnabled(false);
         nestedScrollView = view.findViewById(R.id.nest_sv);
@@ -177,6 +183,7 @@ public class HomeFragment extends Fragment {
                         if (showproduct.getData() == null) {
                             ToastUtils.showShort("没有更多数据了");
                             return;
+
                         }
                         bannerBeans.addAll(showproduct.getData());
                         madapter.setNewData(bannerBeans);
@@ -238,6 +245,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -268,6 +276,7 @@ public class HomeFragment extends Fragment {
                 break;
         }
     }
+
 
     public void setEntranceAvatar(Bitmap bitmap) {
         entranceAvatar.setImageBitmap(bitmap);
