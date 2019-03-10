@@ -1,6 +1,5 @@
 package com.example.myproject;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.example.myproject.fragments.AddFragment;
@@ -28,6 +26,8 @@ import com.jpeng.jpspringmenu.SpringMenu;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -51,7 +51,7 @@ public class HomepageActivity extends AppCompatActivity implements MenuListener,
     private final String cutImageName = "cutProfilePic.jpg"; //裁剪后的图片的输出路径
     private final String fileProvider = "com.pumpkin.kuaipai.fileprovider";
     private Uri finalAvatarUri;
-
+    List<Fragment> fragmentList = new ArrayList<>();
     SpringMenu menu;
 
 
@@ -69,9 +69,10 @@ public class HomepageActivity extends AppCompatActivity implements MenuListener,
         setContentView(R.layout.activity_homepage);
         ButterKnife.inject(this);
         initMenu();
-
-
-        HomeReplace(new HomeFragment());
+        fragmentList.add(new HomeFragment());
+        fragmentList.add(new AddFragment());
+        fragmentList.add(new NewsFragment());
+        HomeReplace(fragmentList.get(0));
     }
 
 
@@ -105,13 +106,13 @@ public class HomepageActivity extends AppCompatActivity implements MenuListener,
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.home:
-                HomeReplace(new HomeFragment());
+                HomeReplace(fragmentList.get(0));
                 break;
             case R.id.add:
-                HomeReplace(new AddFragment());
+                HomeReplace(fragmentList.get(1));
                 break;
             case R.id.news:
-                HomeReplace(new NewsFragment());
+                HomeReplace(fragmentList.get(2));
                 break;
         }
     }
