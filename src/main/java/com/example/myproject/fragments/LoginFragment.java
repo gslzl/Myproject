@@ -79,7 +79,7 @@ public class LoginFragment extends Fragment {
                         SPUtils.getInstance().put("str_login_pass", str_login_pass);
                     } else {
                         //未选中需要清除
-                        SPUtils.getInstance().remove("str_login_pass");
+                        SPUtils.getInstance().remove("str_login_number");
                         SPUtils.getInstance().remove("str_login_pass");
                     }
                     OkGo.<String>post(postUrl)
@@ -91,6 +91,8 @@ public class LoginFragment extends Fragment {
                                     UserBean userBean = new Gson().fromJson(response.body(), UserBean.class);
                                     ToastUtils.showShort(userBean.message);
                                     if (userBean.code.equals("1")){
+                                        SPUtils.getInstance().put("str_nick_name",userBean.data.name);
+                                        SPUtils.getInstance().put("str_avatar_url",userBean.data.avatar);
                                         Intent intent = new Intent(getActivity(), HomepageActivity.class);
                                         startActivity(intent);
                                     }

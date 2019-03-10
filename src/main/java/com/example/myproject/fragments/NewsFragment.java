@@ -1,13 +1,22 @@
 package com.example.myproject.fragments;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.myproject.HomepageActivity;
+import com.example.myproject.MyApp;
 import com.example.myproject.R;
+
+import java.io.File;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -15,17 +24,31 @@ import com.example.myproject.R;
  */
 public class NewsFragment extends Fragment {
 
-
-    public NewsFragment() {
-        // Required empty public constructor
-    }
+    CircleImageView entranceAvatar;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_news, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_news, container, false);
+        entranceAvatar = view.findViewById(R.id.head_image);
+        File file = new File(Environment.getExternalStorageDirectory(), MyApp.AVATAR_FILE_NAME);
+        if (file.exists())
+            entranceAvatar.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/" + MyApp.AVATAR_FILE_NAME));
+        entranceAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomepageActivity homepageActivity = (HomepageActivity) getActivity();
+                homepageActivity.openMenu();
+            }
+        });
+        return view;
+    }
+
+    public void setEntranceAvatar(Bitmap bitmap) {
+        entranceAvatar.setImageBitmap(bitmap);
+
     }
 
 }
