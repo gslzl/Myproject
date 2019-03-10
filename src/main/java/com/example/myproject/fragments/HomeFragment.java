@@ -1,7 +1,6 @@
 package com.example.myproject.fragments;
 
 
-
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,16 +35,9 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-example.myproject.HomepageActivity;
+import com.example.myproject.HomepageActivity;
 import com.example.myproject.MyApp;
-import com.example.myproject.R;
-import com.example.myproject.bean.BannerBean;
-import com.google.gson.Gson;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
-import com.example.myproject.adapter.ProductRecycviewAdapter;
 
 import com.recker.flybanner.FlyBanner;
 
@@ -66,8 +58,7 @@ public class HomeFragment extends Fragment {
     String getUrl;
     String inforUrl;
 
-    int i=0;
-
+    int i = 0;
 
 
     CircleImageView entranceAvatar;
@@ -91,7 +82,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -109,7 +99,6 @@ public class HomeFragment extends Fragment {
                 homepageActivity.openMenu();
             }
         });
-//        initBanner();
         product = view.findViewById(R.id.product);
         product.setNestedScrollingEnabled(false);
         nestedScrollView = view.findViewById(R.id.nest_sv);
@@ -117,8 +106,8 @@ public class HomeFragment extends Fragment {
 
         SpaceItem spaceItem = new SpaceItem(15);
         product.addItemDecoration(spaceItem);
-        madapter = new BrvahAdapter(R.layout.layout_product,bannerBeans,getActivity());
-        product.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        madapter = new BrvahAdapter(R.layout.layout_product, bannerBeans, getActivity());
+        product.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         product.setAdapter(madapter);
 
         //        initBanner();
@@ -133,7 +122,7 @@ public class HomeFragment extends Fragment {
                         initProduct();
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
-                },2000);
+                }, 2000);
             }
         });
 
@@ -141,7 +130,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onScrollChange(NestedScrollView nestedScrollView, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY == (nestedScrollView.getChildAt(0).getMeasuredHeight() - nestedScrollView.getMeasuredHeight())) {
-                    i=i+1;
+                    i = i + 1;
                     initProduct();
 
                 }
@@ -152,22 +141,22 @@ public class HomeFragment extends Fragment {
     }
 
     private void initProduct() {
-            inforUrl = "http://120.79.87.68:5000/getPageProduct";
-            OkGo.<String>post(inforUrl)
-                    .params("page",i)
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onSuccess(Response<String> response) {
-                            BannerBean showproduct = new Gson().fromJson(response.body(),BannerBean.class);
-                            if (showproduct.getData()==null) {
-                                ToastUtils.showShort("没有更多数据了");
-                                return;
-                            }
-                            bannerBeans.addAll(showproduct.getData());
-                            madapter.setNewData(bannerBeans);
-                            LogUtils.i(showproduct.getData());
+        inforUrl = "http://120.79.87.68:5000/getPageProduct";
+        OkGo.<String>post(inforUrl)
+                .params("page", i)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        BannerBean showproduct = new Gson().fromJson(response.body(), BannerBean.class);
+                        if (showproduct.getData() == null) {
+                            ToastUtils.showShort("没有更多数据了");
+                            return;
                         }
-                    });
+                        bannerBeans.addAll(showproduct.getData());
+                        madapter.setNewData(bannerBeans);
+                        LogUtils.i(showproduct.getData());
+                    }
+                });
     }
 
     private void initBanner() {
@@ -200,36 +189,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-
-    private void initBanner() {
-        getUrl = "http://120.79.87.68:5000/getBanner";
-        inforUrl = "http://120.79.87.68:5000/getProduct";
-        OkGo.<String>get(getUrl)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        BannerBean bannerBean = new Gson().fromJson(response.body(), BannerBean.class);
-                        for (BannerBean.bannerBean element : bannerBean.getData()) {
-                            imgesUrl.add(element.getPicture());
-                            imgesID.add(element.getID());
-                        }
-                        banner.setImagesUrl(imgesUrl);
-                    }
-                });
-        banner.setOnItemClickListener(new FlyBanner.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                OkGo.<String>post(inforUrl)
-                        .params("ID", imgesID.get(position))
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                LogUtils.i(response.body());
-                            }
-                        });
-            }
-        });
-    }
 
     public void setEntranceAvatar(Bitmap bitmap) {
         entranceAvatar.setImageBitmap(bitmap);
