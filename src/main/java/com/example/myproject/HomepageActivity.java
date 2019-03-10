@@ -57,7 +57,7 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     private static final int FINISH_CROP = 1;
     private static final int CROP_PHOTO = 2;
 
-
+    private Uri finalAvatarUri;
     HomeFragment homeFragment;
     NewsFragment newsFragment;
     SpringMenu menu;
@@ -83,6 +83,7 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     public void openMenu() {
         menu.openMenu();
     }
+
 
     void initMenu() {
 
@@ -139,7 +140,6 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return super.dispatchTouchEvent(ev);
     }
-
 
     @Override
     public void onMenuOpen() {
@@ -234,7 +234,10 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
                 break;
+
+
         }
     }
 
