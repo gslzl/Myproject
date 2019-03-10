@@ -2,8 +2,11 @@ package com.example.myproject.fragments;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
@@ -19,6 +22,8 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.example.myproject.HomepageActivity;
+import com.example.myproject.MyApp;
 import com.example.myproject.R;
 import com.example.myproject.adapter.BrvahAdapter;
 import com.example.myproject.adapter.SpaceItem;
@@ -31,12 +36,14 @@ import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +55,8 @@ public class HomeFragment extends Fragment {
     String inforUrl;
     String infor;
     int i;
+    CircleImageView entranceAvatar;
+
     List<String> imgesUrl = new ArrayList<>();
     List<String> imgesID = new ArrayList<>();
     List<String> ID = new ArrayList<>();
@@ -82,10 +91,21 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
         banner = view.findViewById(R.id.banner);
+        entranceAvatar = view.findViewById(R.id.head_image);
+        File file = new File(Environment.getExternalStorageDirectory(), MyApp.AVATAR_FILE_NAME);
+        if (file.exists())
+            entranceAvatar.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/" + MyApp.AVATAR_FILE_NAME));
 
+        entranceAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomepageActivity homepageActivity = (HomepageActivity) getActivity();
+                homepageActivity.openMenu();
+            }
+        });
+//        initBanner();
         product = view.findViewById(R.id.product);
         product.setNestedScrollingEnabled(false);
         nestedScrollView = view.findViewById(R.id.nest_sv);
@@ -146,7 +166,6 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-
     private void initProduct() {
         inforUrl = "http://120.79.87.68:5000/getPageProduct";
         OkGo.<String>post(inforUrl)
@@ -184,6 +203,7 @@ public class HomeFragment extends Fragment {
 
     private void initBanner() {
         getUrl = "http://120.79.87.68:5000/getBanner";
+        inforUrl = "http://120.79.87.68:5000/getProduct";
         OkGo.<String>get(getUrl)
                 .execute(new StringCallback() {
                     @Override
@@ -248,4 +268,11 @@ public class HomeFragment extends Fragment {
                 break;
         }
     }
+
+    public void setEntranceAvatar(Bitmap bitmap) {
+        entranceAvatar.setImageBitmap(bitmap);
+
+    }
+
+
 }
