@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMManager;
 
 
 /**
@@ -93,10 +96,6 @@ public class LoginFragment extends Fragment {
                                     if (userBean.code.equals("1")){
                                         SPUtils.getInstance().put("str_nick_name",userBean.data.name);
                                         SPUtils.getInstance().put("str_avatar_url",userBean.data.avatar);
-                                        Intent intent = new Intent(getActivity(), HomepageActivity.class);
-                                        startActivity(intent);
-                                    }
-                                    else {
 
                                     }
 
@@ -118,6 +117,23 @@ public class LoginFragment extends Fragment {
             }
         });
         return v;
+    }
+
+
+    void loginTimServer(String identifier,String userSig){
+        TIMManager.getInstance().login(identifier, userSig, new TIMCallBack() {
+            @Override
+            public void onError(int code, String desc) {
+                //错误码 code 和错误描述 desc，可用于定位请求失败原因
+                //错误码 code 列表请参见错误码表
+            }
+
+            @Override
+            public void onSuccess() {
+                Intent intent = new Intent(getActivity(), HomepageActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }

@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.example.myproject.fragments.AddFragment;
 import com.example.myproject.fragments.HomeFragment;
 import com.example.myproject.fragments.NewsFragment;
 import com.example.myproject.utils.MyUtils;
@@ -119,7 +118,7 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
                 HomeReplace(homeFragment);
                 break;
             case R.id.add:
-                HomeReplace(new AddFragment());
+
                 break;
             case R.id.news:
                 HomeReplace(newsFragment);
