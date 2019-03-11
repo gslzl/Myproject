@@ -19,6 +19,8 @@ import com.tencent.imsdk.TIMSdkConfig;
 import com.tencent.imsdk.TIMUserConfig;
 import com.tencent.imsdk.TIMUserStatusListener;
 import com.tencent.imsdk.ext.message.TIMUserConfigMsgExt;
+import com.tencent.qcloud.uikit.BaseUIKitConfigs;
+import com.tencent.qcloud.uikit.TUIKit;
 
 import java.util.List;
 
@@ -52,6 +54,10 @@ public class MyApp extends Application {
         OkGo.getInstance().init(this);
         TIMManager.getInstance().init(getApplicationContext(), config);
         initUserConfig();
+        //初始TUIKit
+
+        TUIKit.init(this,SDK_APPID, BaseUIKitConfigs.getDefaultConfigs());
+
 
     }
 
@@ -97,9 +103,9 @@ public class MyApp extends Application {
                     public void onGroupTipsEvent(TIMGroupTipsElem elem) {
                         Log.i(tag, "onGroupTipsEvent, type: " + elem.getTipsType());
                     }
-                })
+                });
                 //设置会话刷新监听器
-                .setRefreshListener(new TIMRefreshListener() {
+                userConfig.setRefreshListener(new TIMRefreshListener() {
                     @Override
                     public void onRefresh() {
                         Log.i(tag, "onRefresh");
@@ -130,6 +136,7 @@ public class MyApp extends Application {
                 return true; //返回true将终止回调链，不再调用下一个新消息监听器
             }
         });
+
     }
 
 }

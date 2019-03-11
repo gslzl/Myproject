@@ -1,6 +1,7 @@
 package com.example.myproject;
 
 import android.Manifest;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,9 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -56,7 +55,6 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     private static final int FINISH_CROP = 1;
     private static final int CROP_PHOTO = 2;
 
-    private Uri finalAvatarUri;
     HomeFragment homeFragment;
     NewsFragment newsFragment;
     SpringMenu menu;
@@ -77,6 +75,7 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         newsFragment = new NewsFragment();
         initMenu();
         HomeReplace(homeFragment);
+
     }
 
     public void openMenu() {
@@ -122,16 +121,17 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.news:
-                HomeReplace(newsFragment);
+                HomeReplace(new NewsFragment());
                 break;
         }
     }
 
     public void HomeReplace(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.home_fragment, fragment);
-        fragmentTransaction.commit();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.home_fragment, fragment);
+//        fragmentTransaction.commit();
+        getFragmentManager().beginTransaction().replace(R.id.home_fragment,fragment).commitAllowingStateLoss();
     }
 
 
@@ -265,6 +265,8 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         }
         return null;
     }
+
+
 
 
 }

@@ -2,6 +2,7 @@ package com.example.myproject.fragments;
 
 
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +10,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -211,10 +211,11 @@ public class HomeFragment extends Fragment {
     private void initBanner() {
         getUrl = "http://120.79.87.68:5000/getBanner";
         inforUrl = "http://120.79.87.68:5000/getProduct";
-        OkGo.<String>get(getUrl)
+        OkGo.<String>post(getUrl)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        LogUtils.i(response.body());
                         BannerBean bannerbean = new Gson().fromJson(response.body(), BannerBean.class);
                         if (bannerbean == null) {
                             return;

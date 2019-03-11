@@ -13,24 +13,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <include layout="@layout/layout_avatar" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="82dp"
                 android:fontFamily="@font/textsize"
-                android:gravity="center"
                 android:text="消息"
+                android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="35dp" />
-        </RelativeLayout>
+                android:textSize="22dp" />
+        </FrameLayout>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -40,56 +40,69 @@
             android:layout_marginRight="20dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="128dp">
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/logistics"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/logistics" />
-
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/logistics"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="@font/textsize"
-                        android:text="物流信息"
-                        android:textSize="22sp" />
-                </RelativeLayout>
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/logistics"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/logistics" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/notice"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/notice" />
-                    <TextView
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/logistics"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/textsize"
+                            android:text="物流信息"
+                            android:textSize="15sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/notice"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="@font/textsize"
-                        android:text="通知消息"
-                        android:textSize="22sp" />
-                </RelativeLayout>
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/notice"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/notice" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/notice"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/textsize"
+                            android:text="通知消息"
+                            android:textSize="15sp" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+                <com.tencent.qcloud.uikit.business.session.view.SessionPanel
+                    android:id="@+id/session_panel"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="0dp" />
+
             </LinearLayout>
+
+
         </android.support.v7.widget.CardView>
     </LinearLayout>
 
