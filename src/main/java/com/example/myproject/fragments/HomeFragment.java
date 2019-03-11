@@ -5,7 +5,6 @@ package com.example.myproject.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -102,8 +101,8 @@ public class HomeFragment extends Fragment {
         banner = view.findViewById(R.id.banner);
         entranceAvatar = view.findViewById(R.id.head_image);
         File file = new File(Environment.getExternalStorageDirectory(), MyApp.AVATAR_FILE_NAME);
-        if (file.exists())
-            entranceAvatar.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/" + MyApp.AVATAR_FILE_NAME));
+//        if (file.exists())
+//            entranceAvatar.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/" + MyApp.AVATAR_FILE_NAME));
 
         entranceAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,17 +123,22 @@ public class HomeFragment extends Fragment {
         product.setAdapter(madapter);
 
         infor = "http://120.79.87.68:5000/getProduct";
+        inforUrl = "http://120.79.87.68:5000/getPageProduct";
+        getUrl = "http://120.79.87.68:5000/getBanner";
+
 
         if (!isFirst) {
             i = 0;
+            initBanner();
             initProduct();
             isFirst = true;
         }
         else {
             imgesUrl.clear();
             imgesID.clear();
+            initBanner();
         }
-        initBanner();
+
         banner.setDelayTime(3000);
         banner.setImageLoader(new ImageLoader() {
             @Override
@@ -173,7 +177,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void initProduct() {
-        inforUrl = "http://120.79.87.68:5000/getPageProduct";
         OkGo.<String>post(inforUrl)
                 .params("page", i)
                 .execute(new StringCallback() {
@@ -187,8 +190,8 @@ public class HomeFragment extends Fragment {
                         }
                         bannerBeans.addAll(showproduct.getData());
                         madapter.setNewData(bannerBeans);
-                        for (BannerBean.bannerBean element : showproduct.getData()) {
-                            ID.add(element.getID());
+                        for (BannerBean.bannerBean pelement : showproduct.getData()) {
+                            ID.add(pelement.getID());
                         }
                     }
                 });
@@ -209,8 +212,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initBanner() {
-        getUrl = "http://120.79.87.68:5000/getBanner";
-        inforUrl = "http://120.79.87.68:5000/getProduct";
+
         OkGo.<String>post(getUrl)
                 .execute(new StringCallback() {
                     @Override
@@ -226,24 +228,30 @@ public class HomeFragment extends Fragment {
                                 imgesID.add(element.getID());
                             }
                             banner.setImages(imgesUrl)
+                                    .setOnBannerListener(new OnBannerListener() {
+                                        @Override
+                                        public void OnBannerClick(int position) {
+                                            OkGo.<String>post(infor)
+                                                    .params("ID", imgesID.get(position))
+                                                    .execute(new StringCallback() {
+                                                        @Override
+                                                        public void onSuccess(Response<String> response) {
+                                                            LogUtils.i(response.body());
+                                                        }
+                                                    });
+                                        }
+                                    })
                                     .start();
                         }
 
                     }
                 });
-        banner.setOnBannerListener(new OnBannerListener() {
-            @Override
-            public void OnBannerClick(int position) {
-                OkGo.<String>post(infor)
-                        .params("ID", imgesID.get(position))
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                LogUtils.i(response.body());
-                            }
-                        });
-            }
-        });
+//        banner.setOnBannerListener(new OnBannerListener() {
+//            @Override
+//            public void OnBannerClick(int position) {
+//
+//            }
+//        });
     }
 
 

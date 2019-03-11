@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -118,6 +119,8 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
                 HomeReplace(homeFragment);
                 break;
             case R.id.add:
+                Intent intent = new Intent(this,PublishActivity.class);
+                startActivity(intent);
 
                 break;
             case R.id.news:
@@ -160,8 +163,12 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_order_manage:
+                Intent intent_order = new Intent(this,OrderActivity.class);
+                startActivity(intent_order);
                 break;
             case R.id.layout_collection:
+                Intent intent_collection = new Intent(this,FavoritesActivity.class);
+                startActivity(intent_collection);
                 break;
             case R.id.layout_customer_service:
                 break;
@@ -265,8 +272,4 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         }
         return null;
     }
-
-
-
-
 }

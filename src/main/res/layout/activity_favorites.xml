@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/favoritesbackground"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
+
+    <LinearLayout
+        android:layout_width="411dp"
+        android:layout_height="22dp"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="411dp"
+        android:layout_height="64dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pingfang"
+            android:gravity="center"
+            android:text="我的收藏"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            tools:layout_editor_absoluteX="93dp"
+            tools:layout_editor_absoluteY="216dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="374dp"
+        android:layout_height="46dp"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/list1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton_pay"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/select1"
+                android:button="@null"
+                android:checked="true"
+                android:drawableTop="@null"
+                android:fontFamily="@font/pingfang"
+                android:gravity="center"
+                android:text="竞拍中/待竞拍"
+                android:textColor="@drawable/selector_color_view"
+                android:textSize="15sp" />
+
+            <RadioButton
+                android:id="@+id/radioButton_sell"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@null"
+                android:fontFamily="@font/pingfang"
+                android:gravity="center"
+                android:text="已失效"
+                android:textColor="@drawable/selector_color_view"
+                android:textSize="15sp" />
+
+        </RadioGroup>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eff0f5"
+            android:scrollbars="none">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="11dp"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="@drawable/cardlist1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="153dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="135dp"
+                        android:layout_height="124dp"
+                        app:srcCompat="@drawable/favorite" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="63dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/fav_name"
+                            android:layout_width="210dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pingfang"
+                            android:text="正版恶龙咆哮超凶超凶超级凶送女朋友必备"
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/fav_name3"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pingfang"
+                            android:text="原价：¥199"
+                            android:textColor="#797979"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/fav_name2"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pingfang"
+                            android:text="竞拍价：¥99"
+                            android:textColor="#B52500"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

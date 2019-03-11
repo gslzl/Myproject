@@ -93,6 +93,12 @@ public class LoginFragment extends Fragment {
                             .params("password",str_login_pass)
                             .execute(new StringCallback() {
                                 @Override
+                                public void onError(Response<String> response) {
+                                    super.onError(response);
+                                    Log.i("1","2");
+                                }
+
+                                @Override
                                 public void onSuccess(Response<String> response) {
                                     UserBean userBean = new Gson().fromJson(response.body(), UserBean.class);
                                     ToastUtils.showShort(userBean.message);

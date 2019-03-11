@@ -1,4 +1,286 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <LinearLayout
+            android:layout_width="411dp"
+            android:layout_height="64dp"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/pingfang"
+                android:gravity="center"
+                android:text="发 布"
+                android:textColor="#ffffff"
+                android:textSize="22sp"
+                tools:layout_editor_absoluteX="93dp"
+                tools:layout_editor_absoluteY="216dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/scrollviewshape"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/secondtitile"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="标题"
+                        android:textColorHint="#b3b3b3"
+                        android:fontFamily="@font/pingfang"
+                        android:theme="@style/EditTextStyle"
+                        android:inputType="text" />
+
+                    <EditText
+                        android:id="@+id/scribedetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="175dp"
+                        android:background="@null"
+                        android:fontFamily="@font/pingfang"
+                        android:gravity="top"
+                        android:hint="描述商品的拍卖原因、新旧程度、入手渠道及相关证明"
+                        android:inputType="textMultiLine"
+                        android:minLines="6"
+                        android:textColorHint="#b3b3b3"
+                        android:textSize="14sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="125dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/addmianphoto"
+                            android:layout_width="125dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/addmainphoto" />
+
+                        <Button
+                            android:id="@+id/addphoto"
+                            android:layout_width="125dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/addphoto" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/detail1"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pingfang"
+                            android:text="起拍价："
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/editdetail1"
+                            android:layout_width="164dp"
+                            android:layout_height="56dp"
+                            android:background="@null"
+                            android:fontFamily="@font/pingfang"
+                            android:hint="¥0.00"
+                            android:inputType="number"
+                            android:textColorHint="#b3b3b3"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/detail2"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pingfang"
+                            android:text="商品原价："
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/editdetail2"
+                            android:layout_width="164dp"
+                            android:layout_height="56dp"
+                            android:background="@null"
+                            android:fontFamily="@font/pingfang"
+                            android:hint="¥0.00"
+                            android:inputType="number"
+                            android:textColorHint="#b3b3b3"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/detail3"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pingfang"
+                            android:text="加价幅度："
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/editdetail3"
+                            android:layout_width="164dp"
+                            android:layout_height="56dp"
+                            android:background="@null"
+                            android:fontFamily="@font/pingfang"
+                            android:hint="¥0.00"
+                            android:inputType="number"
+                            android:textColorHint="#b3b3b3"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/detail4"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pingfang"
+                            android:text="开拍时间："
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/editdetail4"
+                            android:layout_width="164dp"
+                            android:layout_height="56dp"
+                            android:background="@null"
+                            android:fontFamily="@font/pingfang"
+                            android:hint="请选择开拍时间"
+                            android:inputType="date"
+                            android:textColorHint="#b3b3b3"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/detail5"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pingfang"
+                            android:text="结束时间："
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/editdetail5"
+                            android:layout_width="164dp"
+                            android:layout_height="56dp"
+                            android:background="@null"
+                            android:fontFamily="@font/pingfang"
+                            android:hint="请选择结束时间"
+                            android:inputType="date"
+                            android:textColorHint="#b3b3b3"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/detail6"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pingfang"
+                            android:text="商品分类："
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/editdetail6"
+                            android:layout_width="164dp"
+                            android:layout_height="56dp"
+                            android:background="@null"
+                            android:fontFamily="@font/pingfang"
+                            android:hint="请选择商品类别"
+                            android:inputType="text"
+                            android:textColorHint="#b3b3b3"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <Button
+                        android:id="@+id/publishbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/publishbutton"
+                        android:fontFamily="@font/pingfang"
+                        android:text="确 认 发 布"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:orientation="vertical"></LinearLayout>
+
+                </LinearLayout>
+
+
+            </ScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
