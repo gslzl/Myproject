@@ -17,12 +17,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.example.myproject.fragments.AddFragment;
 import com.example.myproject.fragments.HomeFragment;
 import com.example.myproject.fragments.NewsFragment;
 import com.example.myproject.utils.MyUtils;
@@ -57,7 +57,6 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     private static final int FINISH_CROP = 1;
     private static final int CROP_PHOTO = 2;
 
-    private Uri finalAvatarUri;
     HomeFragment homeFragment;
     NewsFragment newsFragment;
     SpringMenu menu;
@@ -78,6 +77,7 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         newsFragment = new NewsFragment();
         initMenu();
         HomeReplace(homeFragment);
+//        solveNavigationBar(getWindow());
     }
 
     public void openMenu() {
@@ -120,7 +120,8 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
                 HomeReplace(homeFragment);
                 break;
             case R.id.add:
-                HomeReplace(new AddFragment());
+                Intent intent = new Intent(this,PublishActivity.class);
+                startActivity(intent);
                 break;
             case R.id.news:
                 HomeReplace(newsFragment);
@@ -161,8 +162,12 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_order_manage:
+                Intent intent_order = new Intent(this,OrderActivity.class);
+                startActivity(intent_order);
                 break;
             case R.id.layout_collection:
+                Intent intent_collection = new Intent(this,FavoritesActivity.class);
+                startActivity(intent_collection);
                 break;
             case R.id.layout_customer_service:
                 break;
@@ -265,6 +270,48 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+
+     * <P>shang</P>
+
+     * <P>解决虚拟按键问题</P>
+
+     * @param window
+
+     */
+
+    public void solveNavigationBar(Window window){
+
+        int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE|
+
+                //布局位于状态栏下方
+
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|
+
+                //全屏
+
+                View.SYSTEM_UI_FLAG_FULLSCREEN|
+
+                //隐藏导航栏
+
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|
+
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+
+        if (Build.VERSION.SDK_INT>=19){
+
+            uiOptions |= 0x00001000;
+
+        }else{
+
+            uiOptions |= View.SYSTEM_UI_FLAG_LOW_PROFILE;
+
+        }
+
+        window.getDecorView().setSystemUiVisibility(uiOptions);
+
     }
 
 

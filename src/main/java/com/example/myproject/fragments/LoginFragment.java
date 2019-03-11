@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +87,12 @@ public class LoginFragment extends Fragment {
                             .params("phone_number",str_login_number)
                             .params("password",str_login_pass)
                             .execute(new StringCallback() {
+                                @Override
+                                public void onError(Response<String> response) {
+                                    super.onError(response);
+                                    Log.i("1","2");
+                                }
+
                                 @Override
                                 public void onSuccess(Response<String> response) {
                                     UserBean userBean = new Gson().fromJson(response.body(), UserBean.class);
