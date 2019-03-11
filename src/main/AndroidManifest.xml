@@ -27,7 +27,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".PublishActivity"></activity>
-        <activity android:name=".CategoryActivity" />
         <activity
             android:name=".HomepageActivity"
             android:screenOrientation="portrait">

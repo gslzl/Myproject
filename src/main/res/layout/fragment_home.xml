@@ -53,16 +53,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <com.recker.flybanner.FlyBanner
+                    <com.youth.banner.Banner
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:clickable="true">
-                    </com.recker.flybanner.FlyBanner>
-                    <include layout="@layout/activity_category" />
+                    </com.youth.banner.Banner>
+                    <include layout="@layout/layout_category" />
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/product"
-                            android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingBottom="70dp">
