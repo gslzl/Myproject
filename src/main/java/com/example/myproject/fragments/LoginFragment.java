@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.myproject.HomepageActivity;
@@ -25,6 +26,10 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMManager;
+import com.tencent.qcloud.uikit.TUIKit;
+import com.tencent.qcloud.uikit.common.IUIKitCallBack;
 
 
 /**
@@ -100,10 +105,11 @@ public class LoginFragment extends Fragment {
                                     if (userBean.code.equals("1")){
                                         SPUtils.getInstance().put("str_nick_name",userBean.data.name);
                                         SPUtils.getInstance().put("str_avatar_url",userBean.data.avatar);
-                                        Intent intent = new Intent(getActivity(), HomepageActivity.class);
-                                        startActivity(intent);
-                                    }
-                                    else {
+                                        SPUtils.getInstance().put("str_login_number", str_login_number);
+                                        SPUtils.getInstance().put("str_login_pass", str_login_pass);
+                                        SPUtils.getInstance().put("user_sig",userBean.data.userSig);
+                                        LogUtils.i("腾讯"+userBean.data.userSig);
+                                        onRecvUserSig(str_login_number,userBean.data.userSig);
 
                                     }
 
@@ -127,4 +133,24 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
+
+       private void onRecvUserSig(String userId,String userSig) {
+        TUIKit.login(userId, userSig, new IUIKitCallBack() {
+            @Override
+            public void onSuccess(Object data) {
+
+                /**
+                 * IM 登录成功后的回调操作，一般为跳转到应用的主页（这里的主页内容为下面章节的会话列表）
+                 */
+                Intent intent = new Intent(getActivity(), HomepageActivity.class);
+                startActivity(intent);
+            }
+            @Override
+            public void onError(String module, int errCode, String errMsg) {
+                LogUtils.e("腾讯服务器:"+errCode);
+                Log.e("imlogin fail", errMsg);
+            }
+        });
+    }
 }
+
