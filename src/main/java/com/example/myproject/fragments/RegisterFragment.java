@@ -40,7 +40,7 @@ public class RegisterFragment extends Fragment {
     String str_checkpass;
     String str_pass;
     String str_phone;
-    String checknumber="123456";
+    String checknumber = "123456";
     private TimeCount time;
     View view;
 
@@ -66,12 +66,12 @@ public class RegisterFragment extends Fragment {
                 str_phone = et_phone.getText().toString().trim();
                 String vercodeUrl = "http://120.79.87.68:5000/getVerCode";
                 OkGo.<String>post(vercodeUrl)
-                        .params("phone_number",str_phone)
+                        .params("phone_number", str_phone)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
-                                GetVerCode getverCode = new Gson().fromJson(response.body(),GetVerCode.class);
-                                if(getverCode.code.equals("1")){
+                                GetVerCode getverCode = new Gson().fromJson(response.body(), GetVerCode.class);
+                                if (getverCode.code.equals("1")) {
                                     ToastUtils.showShort("验证码发送成功！");
                                     btn_register.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -86,35 +86,34 @@ public class RegisterFragment extends Fragment {
                                             str_checkpass = et_checkpass.getText().toString().trim();
                                             str_checknumber = et_checknumber.getText().toString().trim();
                                             str_name = et_name.getText().toString().trim();
-                                            if(str_pass.equals(str_checkpass)) {
+                                            if (str_pass.equals(str_checkpass)) {
                                                 String postUrl = "http://120.79.87.68:5000/insertUser";
                                                 OkGo.<String>post(postUrl)
-                                                        .params("phone_number",str_phone)
-                                                        .params("password",str_pass)
-                                                        .params("name",str_name)
-                                                        .params("check_number",str_checknumber)
+                                                        .params("phone_number", str_phone)
+                                                        .params("password", str_pass)
+                                                        .params("name", str_name)
+                                                        .params("check_number", str_checknumber)
                                                         .execute(new StringCallback() {
                                                             @Override
                                                             public void onSuccess(Response<String> response) {
-                                                                UserBean userbean = new Gson().fromJson(response.body(),UserBean.class);
-                                                                if(userbean.code.equals("1")) {
+                                                                UserBean userbean = new Gson().fromJson(response.body(), UserBean.class);
+                                                                if (userbean.code.equals("1")) {
                                                                     ToastUtils.showShort("注册成功！");
-                                                                    ((LoginActivity) getActivity()).replaceFragment(new LoginFragment());
-                                                                }
-                                                                else{
+
+
+                                                                            ((LoginActivity) getActivity()).replaceFragment(new LoginFragment());
+                                                                } else {
                                                                     ToastUtils.showShort("验证码输入有误！");
                                                                 }
                                                             }
                                                         });
 
-                                            }
-                                            else {
-                                                Toast.makeText(getActivity(),"两次密码输入有误",Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(getActivity(), "两次密码输入有误", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
-                                }
-                                else {
+                                } else {
                                     ToastUtils.showShort("验证码发送失败！");
                                 }
 
@@ -126,7 +125,7 @@ public class RegisterFragment extends Fragment {
         return view;
     }
 
-     class TimeCount extends CountDownTimer {
+    class TimeCount extends CountDownTimer {
 
         Button btn;
 
@@ -139,7 +138,7 @@ public class RegisterFragment extends Fragment {
             btn.setBackgroundColor(Color.parseColor("#B52500"));
             btn.setClickable(false);
             btn.setTextColor(Color.parseColor("#FFFFFF"));
-            btn.setText("("+millisUntilFinished / 1000 +") 秒后可重新发送");
+            btn.setText("(" + millisUntilFinished / 1000 + ") 秒后可重新发送");
         }
 
         @Override

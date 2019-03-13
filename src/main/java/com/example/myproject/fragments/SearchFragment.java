@@ -16,7 +16,7 @@ import com.example.myproject.R;
 import com.example.myproject.adapter.SearchAdapter;
 import com.example.myproject.adapter.SpaceItem;
 import com.example.myproject.bean.BannerBean;
-import com.example.myproject.bean.ProductBea;
+import com.example.myproject.bean.ProductBean;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -73,7 +73,7 @@ public class SearchFragment extends Fragment {
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
-                                ProductBea productBean = new Gson().fromJson(response.body(), ProductBea.class);
+                                ProductBean productBean = new Gson().fromJson(response.body(), ProductBean.class);
                                 Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
                                 intent.putExtra("productBean", productBean);
                                 startActivity(intent);
