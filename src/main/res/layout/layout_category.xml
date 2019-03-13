@@ -2,7 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="170dp"
     xmlns:tools="http://schemas.android.com/tools"
     >
 
@@ -17,20 +17,21 @@
 
             <ImageView
                 android:id="@+id/Phone"
-                android:layout_width="120dp"
-                android:layout_height="180dp"
+                android:layout_width="117dp"
+                android:layout_height="163dp"
                 android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
                 android:src="@drawable/phone" />
 
             <ImageView
                 android:id="@+id/Live"
                 android:layout_width="120dp"
-                android:layout_height="80dp"
+                android:layout_height="76dp"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/Phone"
                 android:src="@drawable/live" />
 
@@ -39,8 +40,8 @@
                 android:layout_width="120dp"
                 android:layout_height="80dp"
                 android:layout_below="@+id/Live"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="9dp"
                 android:layout_toRightOf="@+id/Phone"
                 android:src="@drawable/pc" />
 
@@ -50,7 +51,7 @@
                 android:layout_height="80dp"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/Live"
                 android:src="@drawable/bag" />
 
@@ -60,7 +61,7 @@
                 android:layout_height="80dp"
                 android:layout_below="@+id/Live"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="9dp"
                 android:layout_toRightOf="@+id/Pc"
                 android:src="@drawable/toys" />
 
@@ -70,7 +71,7 @@
                 android:layout_height="80dp"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/Bag"
                 android:src="@drawable/cosmetics" />
 
@@ -90,7 +91,7 @@
                 android:layout_height="80dp"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/Cosmetics"
                 android:src="@drawable/gold" />
 
@@ -100,7 +101,7 @@
                 android:layout_height="80dp"
                 android:layout_below="@+id/Gold"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/Luxury"
                 android:src="@drawable/vi" />
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:background="@drawable/background"
     tools:context=".fragments.NewsFragment">
 
@@ -24,22 +24,22 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="82dp"
+                android:layout_marginRight="135dp"
                 android:fontFamily="@font/textsize"
                 android:gravity="center"
                 android:text="消息"
                 android:textColor="@color/white"
-                android:textSize="35dp" />
+                android:textSize="22sp" />
         </RelativeLayout>
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:orientation="vertical"
+            android:background="@drawable/backgroundshape"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp">
+            android:layout_marginRight="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,8 +53,8 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/logistics"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/logistics" />
 
@@ -65,7 +65,7 @@
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/textsize"
                         android:text="物流信息"
-                        android:textSize="22sp" />
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -76,8 +76,8 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/notice"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/notice" />
                     <TextView
@@ -87,10 +87,10 @@
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/textsize"
                         android:text="通知消息"
-                        android:textSize="22sp" />
+                        android:textSize="15sp" />
                 </RelativeLayout>
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </LinearLayout>
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>

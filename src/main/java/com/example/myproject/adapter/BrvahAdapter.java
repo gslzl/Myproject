@@ -28,7 +28,7 @@ public class BrvahAdapter extends BaseQuickAdapter<BannerBean.bannerBean, BaseVi
         Glide.with(context)
                 .load(item.picture)
                 .into(picture);
-        helper.setText(R.id.tl_information,item.information);
+        helper.setText(R.id.tl_information,item.name);
         helper.setText(R.id.number,item.person_number);
         helper.setText(R.id.price,item.current_price);
         helper.setText(R.id.state,item.state);

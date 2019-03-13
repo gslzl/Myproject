@@ -17,7 +17,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -77,7 +76,6 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         newsFragment = new NewsFragment();
         initMenu();
         HomeReplace(homeFragment);
-//        solveNavigationBar(getWindow());
     }
 
     public void openMenu() {
@@ -135,6 +133,12 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         fragmentTransaction.replace(R.id.home_fragment, fragment);
         fragmentTransaction.commit();
     }
+    public void SearchReplace(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.hot_search, fragment);
+        fragmentTransaction.commit();
+    }
 
 
     @Override
@@ -172,6 +176,8 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.layout_customer_service:
                 break;
             case R.id.layout_setting:
+                Intent intent_set = new Intent(this,SetActivity.class);
+                startActivity(intent_set);
                 break;
             case R.id.civ_avatar:
                 openAlbum();
@@ -272,47 +278,6 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         return null;
     }
 
-    /**
-
-     * <P>shang</P>
-
-     * <P>解决虚拟按键问题</P>
-
-     * @param window
-
-     */
-
-    public void solveNavigationBar(Window window){
-
-        int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE|
-
-                //布局位于状态栏下方
-
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|
-
-                //全屏
-
-                View.SYSTEM_UI_FLAG_FULLSCREEN|
-
-                //隐藏导航栏
-
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|
-
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-
-        if (Build.VERSION.SDK_INT>=19){
-
-            uiOptions |= 0x00001000;
-
-        }else{
-
-            uiOptions |= View.SYSTEM_UI_FLAG_LOW_PROFILE;
-
-        }
-
-        window.getDecorView().setSystemUiVisibility(uiOptions);
-
-    }
 
 
 }

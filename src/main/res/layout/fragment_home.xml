@@ -12,13 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <include layout="@layout/layout_avatar" />
-
             <android.support.v7.widget.SearchView
                 android:id="@+id/search"
                 android:layout_width="220dp"
@@ -29,17 +26,15 @@
                 android:background="@drawable/shape">
             </android.support.v7.widget.SearchView>
         </RelativeLayout>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_height="match_parent">
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
             app:cardCornerRadius="20dp"
-            app:cardElevation="20dp">
+            android:elevation="20dp"
+            android:orientation="vertical">
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
@@ -57,10 +52,11 @@
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:clickable="true">
+                        android:clickable="true"
+                        >
                     </com.youth.banner.Banner>
                     <include layout="@layout/layout_category" />
-                        <android.support.v7.widget.RecyclerView
+                    <android.support.v7.widget.RecyclerView
                             android:id="@+id/product"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -70,6 +66,5 @@
             </android.support.v4.widget.NestedScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
         </android.support.v7.widget.CardView>
-        </FrameLayout>
     </LinearLayout>
 </RelativeLayout>

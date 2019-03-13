@@ -25,30 +25,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".PublishActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".OrderActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".FavoritesActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".SetActivity" />
+        <activity android:name=".PersonalActivity" />
+        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".ProductDetailActivity" />
+        <activity
+            android:name=".PublishActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FavoritesActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomepageActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait" >
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".GuideActivity"
-            android:screenOrientation="portrait" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".TestActivity"
             android:screenOrientation="portrait" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.myproject.fileprovider"
