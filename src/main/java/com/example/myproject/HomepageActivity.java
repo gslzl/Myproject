@@ -240,6 +240,7 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case CROP_PHOTO:
+                if(data==null) return;
                 startActivityForResult(cropPhoto(data.getData()), FINISH_CROP);
                 break;
             case FINISH_CROP:

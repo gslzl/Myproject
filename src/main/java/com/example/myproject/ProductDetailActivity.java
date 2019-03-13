@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.example.myproject.bean.ProductBean;
+import com.netease.nim.uikit.api.NimUIKit;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -59,14 +60,13 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         }
 
-
-
     }
 
     @OnClick({R.id.connection, R.id.makeup})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.connection:
+                NimUIKit.startP2PSession(this, "1771138872");
                 break;
             case R.id.makeup:
                 break;
