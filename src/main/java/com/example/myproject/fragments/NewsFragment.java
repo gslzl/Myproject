@@ -14,6 +14,7 @@ import com.example.myproject.HomepageActivity;
 import com.example.myproject.MyApp;
 import com.example.myproject.R;
 
+
 import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -27,6 +28,7 @@ public class NewsFragment extends Fragment {
     CircleImageView entranceAvatar;
 
     private View baseView;
+
 
 
 
@@ -46,7 +48,7 @@ public class NewsFragment extends Fragment {
                 homepageActivity.openMenu();
             }
         });
-
+//        initView();
         return baseView;
     }
 
@@ -56,6 +58,8 @@ public class NewsFragment extends Fragment {
         entranceAvatar.setImageBitmap(bitmap);
 
     }
+
+
 
 
 

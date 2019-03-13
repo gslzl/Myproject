@@ -24,6 +24,11 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.netease.nim.uikit.business.recent.RecentContactsFragment;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.auth.LoginInfo;
 
 
 /**
@@ -40,6 +45,7 @@ public class LoginFragment extends Fragment {
     TextView tv_forget_pass;
     private String str_login_number;
     String   str_login_pass;
+
     Boolean flag = false;
 
     public LoginFragment() {
@@ -92,12 +98,10 @@ public class LoginFragment extends Fragment {
                                     if (userBean.code.equals("1")){
                                         SPUtils.getInstance().put("str_nick_name",userBean.data.name);
                                         SPUtils.getInstance().put("str_avatar_url",userBean.data.avatar);
-                                        Intent intent = new Intent(getActivity(), HomepageActivity.class);
-                                        startActivity(intent);
-                                        getActivity().finish();
-                                    }
-                                    else {
-                                        ToastUtils.showShort("账号或密码错误！");
+                                        SPUtils.getInstance().put("str_login_number", str_login_number);
+                                        SPUtils.getInstance().put("str_login_pass", str_login_pass);
+                                        SPUtils.getInstance().put("str_nim_token",userBean.data.userSig);
+                                        loginNim(str_login_number,userBean.data.userSig);
                                     }
 
                                 }
@@ -120,4 +124,33 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
+    public void loginNim(String account,String token){
+        LoginInfo info = new LoginInfo(account,token);
+        RequestCallback<LoginInfo> callback =
+                new RequestCallback<LoginInfo>() {
+                    @Override
+                    public void onSuccess(LoginInfo param) {
+
+                        startActivity(new Intent(getActivity(),HomepageActivity.class));
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+                        ToastUtils.showShort("登录失败");
+                    }
+
+                    @Override
+                    public void onException(Throwable exception) {
+
+                    }
+                };
+        NIMClient.getService(AuthService.class).login(info)
+                .setCallback(callback);
+
+    }
+
+
+
+
 }
+

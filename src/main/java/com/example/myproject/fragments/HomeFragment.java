@@ -1,6 +1,8 @@
 package com.example.myproject.fragments;
 
 
+
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -121,6 +124,7 @@ public class HomeFragment extends Fragment {
         product.setNestedScrollingEnabled(false);
         nestedScrollView = view.findViewById(R.id.nest_sv);
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
         SpaceItem spaceItem = new SpaceItem(15);
         product.addItemDecoration(spaceItem);
         madapter = new BrvahAdapter(R.layout.layout_product, bannerBeans, getActivity());
@@ -238,9 +242,9 @@ public class HomeFragment extends Fragment {
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
-                                ProductBean productBean = new Gson().fromJson(response.body(), ProductBean.class);
+                                ProductBean ProductBeann = new Gson().fromJson(response.body(), ProductBean.class);
                                 Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
-                                intent.putExtra("productBean", productBean);
+                                intent.putExtra("ProductBeann", ProductBeann);
                                 startActivity(intent);
 
                             }
@@ -255,6 +259,7 @@ public class HomeFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        LogUtils.i(response.body());
                         BannerBean bannerbean = new Gson().fromJson(response.body(), BannerBean.class);
                         if (bannerbean == null) {
                             return;
@@ -273,9 +278,9 @@ public class HomeFragment extends Fragment {
                                                     .execute(new StringCallback() {
                                                         @Override
                                                         public void onSuccess(Response<String> response) {
-                                                            ProductBean productBean = new Gson().fromJson(response.body(), ProductBean.class);
+                                                            ProductBean ProductBeann = new Gson().fromJson(response.body(), ProductBean.class);
                                                             Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
-                                                            intent.putExtra("productBean", productBean);
+                                                            intent.putExtra("ProductBeann", ProductBeann);
                                                             startActivity(intent);
                                                         }
                                                     });
