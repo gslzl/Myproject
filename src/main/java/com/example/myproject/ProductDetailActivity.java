@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.example.myproject.bean.ProductBea;
+import com.example.myproject.bean.ProductBean;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -45,7 +45,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         Intent intent  = getIntent();
         if (intent.hasExtra("productBean")) {
 
-            ProductBea productBea = (ProductBea) intent.getSerializableExtra("productBean");
+            ProductBean productBea = (ProductBean) intent.getSerializableExtra("productBean");
             title.setText(productBea.getData().getName());
             infor.setText(productBea.getData().getInformation());
             auction.setText(productBea.getData().getCurrent_price());

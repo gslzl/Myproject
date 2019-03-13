@@ -26,45 +26,51 @@
                 android:background="@drawable/shape">
             </android.support.v7.widget.SearchView>
         </RelativeLayout>
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="15dp"
-            app:cardCornerRadius="20dp"
-            android:elevation="20dp"
-            android:orientation="vertical">
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+        <LinearLayout
+            android:id="@+id/search_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <android.support.v4.widget.NestedScrollView
-                android:id="@+id/nest_sv"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <LinearLayout
-                    android:id="@+id/hot_search"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                app:cardCornerRadius="20dp"
+                android:elevation="20dp"
+                android:orientation="vertical">
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeRefreshLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-                    <com.youth.banner.Banner
-                        android:id="@+id/banner"
+                    android:layout_height="match_parent">
+                    <android.support.v4.widget.NestedScrollView
+                        android:id="@+id/nest_sv"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:clickable="true"
-                        >
-                    </com.youth.banner.Banner>
-                    <include layout="@layout/layout_category" />
-                    <android.support.v7.widget.RecyclerView
-                            android:id="@+id/product"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:id="@+id/hot_search"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="70dp">
-                        </android.support.v7.widget.RecyclerView>
-                </LinearLayout>
-            </android.support.v4.widget.NestedScrollView>
-        </android.support.v4.widget.SwipeRefreshLayout>
-        </android.support.v7.widget.CardView>
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <com.youth.banner.Banner
+                                android:id="@+id/banner"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"
+                                android:clickable="true"
+                                >
+                            </com.youth.banner.Banner>
+                            <include layout="@layout/layout_category" />
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/product"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="70dp">
+                            </android.support.v7.widget.RecyclerView>
+                        </LinearLayout>
+                    </android.support.v4.widget.NestedScrollView>
+                </android.support.v4.widget.SwipeRefreshLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>

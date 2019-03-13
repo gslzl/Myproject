@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -31,7 +30,7 @@ import com.example.myproject.R;
 import com.example.myproject.adapter.BrvahAdapter;
 import com.example.myproject.adapter.SpaceItem;
 import com.example.myproject.bean.BannerBean;
-import com.example.myproject.bean.ProductBea;
+import com.example.myproject.bean.ProductBean;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -239,7 +238,7 @@ public class HomeFragment extends Fragment {
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
-                                ProductBea productBean = new Gson().fromJson(response.body(), ProductBea.class);
+                                ProductBean productBean = new Gson().fromJson(response.body(), ProductBean.class);
                                 Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
                                 intent.putExtra("productBean", productBean);
                                 startActivity(intent);
@@ -274,7 +273,7 @@ public class HomeFragment extends Fragment {
                                                     .execute(new StringCallback() {
                                                         @Override
                                                         public void onSuccess(Response<String> response) {
-                                                            ProductBea productBean = new Gson().fromJson(response.body(), ProductBea.class);
+                                                            ProductBean productBean = new Gson().fromJson(response.body(), ProductBean.class);
                                                             Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
                                                             intent.putExtra("productBean", productBean);
                                                             startActivity(intent);
