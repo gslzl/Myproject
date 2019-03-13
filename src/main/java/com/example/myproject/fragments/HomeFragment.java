@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -137,7 +138,8 @@ public class HomeFragment extends Fragment {
             initBanner();
             initProduct();
             isFirst = true;
-        } else {
+        }
+        else {
             imgesUrl.clear();
             imgesID.clear();
             initBanner();

@@ -2,7 +2,7 @@ package com.example.myproject.bean;
 
 import java.io.Serializable;
 
-public class ProductBea implements Serializable {
+public class ProductBean implements Serializable {
     public String code;
     private productBean data;
 

@@ -12,5 +12,6 @@ public class UserBean implements Serializable {
         public String name;
         public String password;
         public String phone_number;
+        public String userSig;
     }
 }
