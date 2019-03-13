@@ -33,7 +33,7 @@ public class BannerBean implements Serializable {
     }
 
     public String message;
-    public static class bannerBean{
+    public static class bannerBean implements Serializable{
         public String ID;
         public String name;
         public String user_ID;

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:background="@drawable/background"
     tools:context=".fragments.NewsFragment">
 
@@ -13,8 +14,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <include layout="@layout/layout_avatar" />
@@ -26,11 +27,11 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/textsize"
-                android:text="消息"
                 android:gravity="center"
+                android:text="消息"
                 android:textColor="@color/white"
-                android:textSize="22dp" />
-        </FrameLayout>
+                android:textSize="22sp" />
+        </RelativeLayout>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -106,4 +107,4 @@
         </android.support.v7.widget.CardView>
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>

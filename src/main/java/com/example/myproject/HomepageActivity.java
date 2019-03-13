@@ -1,7 +1,6 @@
 package com.example.myproject;
 
 import android.Manifest;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,12 +10,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -76,7 +76,6 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         newsFragment = new NewsFragment();
         initMenu();
         HomeReplace(homeFragment);
-
     }
 
     public void openMenu() {
@@ -121,20 +120,24 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.add:
                 Intent intent = new Intent(this,PublishActivity.class);
                 startActivity(intent);
-
                 break;
             case R.id.news:
-                HomeReplace(new NewsFragment());
+                HomeReplace(newsFragment);
                 break;
         }
     }
 
     public void HomeReplace(Fragment fragment) {
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.home_fragment, fragment);
-//        fragmentTransaction.commit();
-        getFragmentManager().beginTransaction().replace(R.id.home_fragment,fragment).commitAllowingStateLoss();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.home_fragment, fragment);
+        fragmentTransaction.commit();
+    }
+    public void SearchReplace(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.hot_search, fragment);
+        fragmentTransaction.commit();
     }
 
 
@@ -173,6 +176,8 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.layout_customer_service:
                 break;
             case R.id.layout_setting:
+                Intent intent_set = new Intent(this,SetActivity.class);
+                startActivity(intent_set);
                 break;
             case R.id.civ_avatar:
                 openAlbum();
@@ -272,4 +277,7 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         }
         return null;
     }
+
+
+
 }

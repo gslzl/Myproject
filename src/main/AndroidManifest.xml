@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" /> <!-- 定位 -->
+
     <!-- 用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
@@ -27,34 +27,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <activity android:name=".PublishActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".OrderActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".FavoritesActivity"  android:screenOrientation="portrait"/>
-
-        <activity android:name=".ChatActivity"></activity>
-
+        <activity android:name=".SetActivity" />
+        <activity android:name=".PersonalActivity" />
+        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".ProductDetailActivity" />
+        <activity
+            android:name=".PublishActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FavoritesActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomepageActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".GuideActivity"
-            android:screenOrientation="portrait" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".TestActivity"
             android:screenOrientation="portrait" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.myproject.fileprovider"
@@ -64,13 +68,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-            android:name=".GuideActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TestActivity"
-            android:screenOrientation="portrait" />
-
     </application>
 
 </manifest>

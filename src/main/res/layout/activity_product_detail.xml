@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProductDetailActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="0dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/pingfang"
+                android:gravity="center"
+                android:text="奇虎大红袍不甜不要钱"
+                android:textColor="#ffffff"
+                android:textSize="22sp"
+                tools:layout_editor_absoluteX="93dp"
+                tools:layout_editor_absoluteY="216dp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:cardCornerRadius="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/linearlayoutshape"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="286dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="289dp"
+                        app:srcCompat="@drawable/productbanner"
+                        android:scaleType="fitXY"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/linearlayoutpadding"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:paddingTop="5dp"
+                        android:id="@+id/infor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/pingfang"
+                        android:inputType="textMultiLine"
+                        android:text="1982年大红袍现跳楼价甩卖，希望爱茶人士打包带走"
+                        android:textColor="#000000"
+                        android:textSize="22sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="91dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="103dp"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/pingfang"
+                                    android:text="原价:  ￥"
+                                    android:textColor="#797979"
+                                    android:textSize="18sp"/>
+                                <TextView
+                                    android:id="@+id/prime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/pingfang"
+                                    android:textColor="#797979"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="49dp" android:fontFamily="@font/pingfang"
+                                    android:text="竞拍价：¥"
+                                    android:textColor="#B52500"
+                                    android:textSize="24sp"
+                                    />
+                                <TextView
+                                    android:id="@+id/auction"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="49dp"
+                                    android:fontFamily="@font/pingfang"
+                                    android:textColor="#B52500"
+                                    android:textSize="24sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/free_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="41dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/pingfang"
+                            android:gravity="center"
+                            android:text="00:00:01"
+                            android:textColor="#b52500"
+                            android:textSize="30sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="137dp"
+                        android:orientation="vertical"
+                        android:background="@drawable/linearlayoutframe">
+                        <TextView
+                            android:paddingTop="5dp"
+                            android:id="@+id/intro"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/pingfang"
+                            android:inputType="textMultiLine"
+                            android:text="    100%正品，1982年生产，没馊没坏没变味没发霉。我求求各位小哥哥小姐姐们，快来买吧，不买我真的就没钱吃饭了，我要饿死了。"
+                            android:textColor="#797979"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/connection"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/communication"
+                            android:fontFamily="@font/pingfang"
+                            android:text="    联系卖家"
+                            android:textColor="#B52500"
+                            android:textSize="18sp" />
+
+                        <Button
+                            android:id="@+id/makeup"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/increaseprice"
+                            android:fontFamily="@font/pingfang"
+                            android:text="    我要加价"
+                            android:textColor="#b52500"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

@@ -31,7 +31,7 @@ public class ProductBean implements Serializable {
     }
 
     public String message;
-    public static class productBean{
+    public static class productBean implements Serializable{
         public String ID;
         public String name;
         public String user_ID;

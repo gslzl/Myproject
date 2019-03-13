@@ -1,17 +1,19 @@
 package com.example.myproject.fragments;
 
 
-
-import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,21 +26,19 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.myproject.HomepageActivity;
 import com.example.myproject.MyApp;
+import com.example.myproject.ProductDetailActivity;
 import com.example.myproject.R;
 import com.example.myproject.adapter.BrvahAdapter;
 import com.example.myproject.adapter.SpaceItem;
 import com.example.myproject.bean.BannerBean;
+import com.example.myproject.bean.ProductBea;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
-
-import com.example.myproject.HomepageActivity;
-import com.example.myproject.MyApp;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,7 +58,9 @@ public class HomeFragment extends Fragment {
     String getUrl;
     String inforUrl;
     String infor;
+    String searchUrl;
     int i;
+    boolean isFirst = false;
 
     CircleImageView entranceAvatar;
 
@@ -72,7 +74,8 @@ public class HomeFragment extends Fragment {
     SwipeRefreshLayout mSwipeRefreshLayout;
     NestedScrollView nestedScrollView;
     List<BannerBean.bannerBean> bannerBeans = new ArrayList<>();
-    boolean isFirst = false;
+    SearchFragment searchFragment = new SearchFragment();
+    Bundle bundle = new Bundle();
 
     @InjectView(R.id.Phone)
     ImageView Phone;
@@ -92,6 +95,8 @@ public class HomeFragment extends Fragment {
     ImageView Gold;
     @InjectView(R.id.Vt)
     ImageView Vt;
+    @InjectView(R.id.search)
+    SearchView search;
 
 
     @Override
@@ -100,22 +105,23 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         banner = view.findViewById(R.id.banner);
         entranceAvatar = view.findViewById(R.id.head_image);
-        File file = new File(Environment.getExternalStorageDirectory(), MyApp.AVATAR_FILE_NAME);
-//        if (file.exists())
-//            entranceAvatar.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/" + MyApp.AVATAR_FILE_NAME));
 
-        entranceAvatar.setOnClickListener(new View.OnClickListener() {
+        File file = new File(Environment.getExternalStorageDirectory(), MyApp.AVATAR_FILE_NAME);
+        if (file.exists()) {
+            entranceAvatar.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/" + MyApp.AVATAR_FILE_NAME));
+        }
+            entranceAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HomepageActivity homepageActivity = (HomepageActivity) getActivity();
                 homepageActivity.openMenu();
             }
         });
+
         product = view.findViewById(R.id.product);
         product.setNestedScrollingEnabled(false);
         nestedScrollView = view.findViewById(R.id.nest_sv);
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-
         SpaceItem spaceItem = new SpaceItem(15);
         product.addItemDecoration(spaceItem);
         madapter = new BrvahAdapter(R.layout.layout_product, bannerBeans, getActivity());
@@ -125,7 +131,7 @@ public class HomeFragment extends Fragment {
         infor = "http://120.79.87.68:5000/getProduct";
         inforUrl = "http://120.79.87.68:5000/getPageProduct";
         getUrl = "http://120.79.87.68:5000/getBanner";
-
+        searchUrl= "http://120.79.87.68:5000/search";
 
         if (!isFirst) {
             i = 0;
@@ -173,6 +179,36 @@ public class HomeFragment extends Fragment {
             }
         });
         ButterKnife.inject(this, view);
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                OkGo.<String>post(searchUrl)
+                        .params("key_words",s)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                BannerBean bannerBean = new Gson().fromJson(response.body(),BannerBean.class);
+                                if(bannerBean.getCode().equals("1")){
+                                    bundle.putSerializable("search_banner", bannerBean);
+                                    searchFragment.setArguments(bundle);
+                                    ((HomepageActivity)getActivity()).SearchReplace(searchFragment);
+                                }
+                                else {
+                                    ToastUtils.showShort("无检索内容！");
+                                    return;
+                                }
+                            }
+                        });
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
         return view;
     }
 
@@ -203,7 +239,11 @@ public class HomeFragment extends Fragment {
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
-                                LogUtils.i(response.body());
+                                ProductBea productBean = new Gson().fromJson(response.body(), ProductBea.class);
+                                Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+                                intent.putExtra("productBean", productBean);
+                                startActivity(intent);
+
                             }
                         });
             }
@@ -212,12 +252,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void initBanner() {
-
         OkGo.<String>post(getUrl)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        LogUtils.i(response.body());
                         BannerBean bannerbean = new Gson().fromJson(response.body(), BannerBean.class);
                         if (bannerbean == null) {
                             return;
@@ -236,7 +274,10 @@ public class HomeFragment extends Fragment {
                                                     .execute(new StringCallback() {
                                                         @Override
                                                         public void onSuccess(Response<String> response) {
-                                                            LogUtils.i(response.body());
+                                                            ProductBea productBean = new Gson().fromJson(response.body(), ProductBea.class);
+                                                            Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+                                                            intent.putExtra("productBean", productBean);
+                                                            startActivity(intent);
                                                         }
                                                     });
                                         }
@@ -291,6 +332,4 @@ public class HomeFragment extends Fragment {
         entranceAvatar.setImageBitmap(bitmap);
 
     }
-
-
 }
