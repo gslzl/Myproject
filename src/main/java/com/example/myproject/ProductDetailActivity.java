@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.example.myproject.bean.ProductBea;
+import com.example.myproject.bean.ProductBean;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -43,14 +43,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_detail);
         ButterKnife.inject(this);
         Intent intent  = getIntent();
-        if (intent.hasExtra("productBean")) {
+        if (intent.hasExtra("ProductBeann")) {
 
-            ProductBea productBea = (ProductBea) intent.getSerializableExtra("productBean");
-            title.setText(productBea.getData().getName());
-            infor.setText(productBea.getData().getInformation());
-            auction.setText(productBea.getData().getCurrent_price());
+            ProductBean ProductBean = (com.example.myproject.bean.ProductBean) intent.getSerializableExtra("ProductBeann");
+            title.setText(ProductBean.getData().getName());
+            infor.setText(ProductBean.getData().getInformation());
+            auction.setText(ProductBean.getData().getCurrent_price());
             Glide.with(this)
-                    .load(productBea.getData().getPicture())
+                    .load(ProductBean.getData().getPicture())
                     .into(imageView);
         }else{
 

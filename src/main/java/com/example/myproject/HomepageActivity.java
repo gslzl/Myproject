@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -76,6 +77,8 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         newsFragment = new NewsFragment();
         initMenu();
         HomeReplace(homeFragment);
+
+
     }
 
     public void openMenu() {
@@ -128,17 +131,30 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void HomeReplace(Fragment fragment) {
+
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         fragmentTransaction.replace(R.id.home_fragment, fragment);
+
         fragmentTransaction.commit();
+
     }
+
     public void SearchReplace(Fragment fragment) {
+
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         fragmentTransaction.replace(R.id.hot_search, fragment);
+
         fragmentTransaction.commit();
+
     }
+
+
 
 
     @Override
@@ -277,6 +293,7 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         }
         return null;
     }
+
 
 
 
