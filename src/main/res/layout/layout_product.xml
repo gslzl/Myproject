@@ -22,36 +22,74 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:orientation="horizontal">
-
-        <TextView
+        <LinearLayout
             android:layout_weight="1"
-            android:id="@+id/price"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textColor="@color/button_color"
-            android:textSize="15sp"
-            android:fontFamily="@font/textsize"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="@font/textsize"
+                android:text="竞拍价：¥"
+                android:textSize="10sp"
+                android:textColor="#B52500"/>
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="10sp"
+                android:textColor="#B52500"
+                android:fontFamily="@font/textsize"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_gravity="center"
+                android:id="@+id/state"
+                android:layout_width="39dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/stateshape"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:textColor="@color/button_color" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
         <TextView
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="8sp"
+            android:fontFamily="@font/textsize"
+            android:text="当前"/>
+        <TextView
             android:id="@+id/number"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:textSize="10sp"
+            android:textSize="8sp"
             android:fontFamily="@font/textsize"/>
-
         <TextView
-            android:layout_gravity="center"
-            android:id="@+id/state"
-            android:layout_width="49dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/stateshape"
+            android:fontFamily="@font/textsize"
             android:gravity="center"
-            android:textColor="@color/button_color"
-            android:textSize="15sp" />
+            android:textSize="8sp"
+            android:text="人出过价"/>
     </LinearLayout>
 
 

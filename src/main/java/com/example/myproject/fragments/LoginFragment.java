@@ -25,9 +25,11 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+
 import com.netease.nim.uikit.business.recent.RecentContactsFragment;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
+
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
@@ -106,6 +108,9 @@ public class LoginFragment extends Fragment {
                                         SPUtils.getInstance().put("str_nim_token",userBean.data.userSig);
                                         LogUtils.i("tokern"+userBean.data.userSig);
                                         loginNim(str_login_number,userBean.data.userSig);
+                                    }
+                                    else {
+                                        ToastUtils.showShort("账号或密码输入有误！");
                                     }
 
                                 }

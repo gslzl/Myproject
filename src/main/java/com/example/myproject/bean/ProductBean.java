@@ -34,13 +34,67 @@ public class ProductBean implements Serializable {
     public static class productBean implements Serializable{
         public String ID;
         public String name;
-        public String user_ID;
+        public String user_ID;//发布的
         public String picture;
         public String information;
-        public String star_price;
+        public String start_price;
         public String current_price;
         public String time;
-        public String state;
+        public String state;//商品状态
+        public String person_number;//参与竞拍人数
+        public String price;
+        public String end_time;
+        public String buy_user;//现出价最高的
+        public String catalog;
+        public String scope;//竞价幅度
+
+        public String getPerson_number() {
+            return person_number;
+        }
+
+        public void setPerson_number(String person_number) {
+            person_number = person_number;
+        }
+
+        public String getPrice() {
+            return price;
+        }
+
+        public void setPrice(String price) {
+            this.price = price;
+        }
+
+        public String getEnd_time() {
+            return end_time;
+        }
+
+        public void setEnd_time(String end_time) {
+            this.end_time = end_time;
+        }
+
+        public String getBuy_user() {
+            return buy_user;
+        }
+
+        public void setBuy_user(String buy_user) {
+            this.buy_user = buy_user;
+        }
+
+        public String getCatalog() {
+            return catalog;
+        }
+
+        public void setCatalog(String catalog) {
+            this.catalog = catalog;
+        }
+
+        public String getScope() {
+            return scope;
+        }
+
+        public void setScope(String scope) {
+            this.scope = scope;
+        }
 
         public String getID() {
             return ID;
@@ -83,11 +137,11 @@ public class ProductBean implements Serializable {
         }
 
         public String getStar_price() {
-            return star_price;
+            return start_price;
         }
 
         public void setStar_price(String star_price) {
-            this.star_price = star_price;
+            this.start_price = star_price;
         }
 
         public String getCurrent_price() {

@@ -43,6 +43,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
         <activity android:name=".LocationActivity">
 
         </activity>
@@ -55,6 +56,7 @@
         <activity android:name=".PersonalActivity" />
         <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".ProductDetailActivity" />
+
         <activity
             android:name=".PublishActivity"
             android:screenOrientation="portrait" />

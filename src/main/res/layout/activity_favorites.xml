@@ -61,13 +61,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/select1"
                     android:button="@null"
                     android:checked="true"
                     android:drawableTop="@null"
                     android:fontFamily="@font/pingfang"
                     android:gravity="center"
-                    android:text="竞拍中/待竞拍"
+                    android:text="竞拍中"
                     android:textColor="@drawable/selector_color_view"
                     android:textSize="15sp" />
 
