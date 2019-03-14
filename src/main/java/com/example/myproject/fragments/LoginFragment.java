@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.myproject.HomepageActivity;
@@ -24,6 +25,11 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+
+import com.netease.nim.uikit.business.recent.RecentContactsFragment;
+import com.netease.nim.uikit.common.util.log.LogUtil;
+import com.netease.nim.uikit.impl.NimUIKitImpl;
+
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
@@ -100,6 +106,7 @@ public class LoginFragment extends Fragment {
                                         SPUtils.getInstance().put("str_login_number", str_login_number);
                                         SPUtils.getInstance().put("str_login_pass", str_login_pass);
                                         SPUtils.getInstance().put("str_nim_token",userBean.data.userSig);
+                                        LogUtils.i("tokern"+userBean.data.userSig);
                                         loginNim(str_login_number,userBean.data.userSig);
                                     }
                                     else {
@@ -132,7 +139,6 @@ public class LoginFragment extends Fragment {
                 new RequestCallback<LoginInfo>() {
                     @Override
                     public void onSuccess(LoginInfo param) {
-
                         startActivity(new Intent(getActivity(),HomepageActivity.class));
                     }
 
@@ -146,8 +152,7 @@ public class LoginFragment extends Fragment {
 
                     }
                 };
-        NIMClient.getService(AuthService.class).login(info)
-                .setCallback(callback);
+        NimUIKitImpl.login(info,callback);
 
     }
 

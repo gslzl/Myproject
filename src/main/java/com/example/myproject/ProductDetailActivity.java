@@ -25,6 +25,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import com.netease.nim.uikit.api.NimUIKit;
+
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -108,6 +110,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         intro.setText(ProductBean.getData().getInformation());
         prime.setText(ProductBean.getData().getPrice());
 
+
         now_id = ProductBean.getData().getID();
         now_price = ProductBean.getData().getCurrent_price();
         now_range = ProductBean.getData().getScope();
@@ -117,12 +120,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(ProductBean.getData().getPicture())
                 .into(imageView);
+
     }
 
     @OnClick({R.id.connection, R.id.makeup, R.id.get_fav, R.id.map})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.connection:
+                NimUIKit.startP2PSession(this, "1771138872");
                 break;
             case R.id.makeup:
                 OkGo.<String>post(makeup_url)
