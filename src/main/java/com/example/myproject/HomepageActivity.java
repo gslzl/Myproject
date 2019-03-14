@@ -26,6 +26,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.example.myproject.fragments.HomeFragment;
 import com.example.myproject.fragments.NewsFragment;
 import com.example.myproject.utils.MyUtils;
+import com.example.myproject.utils.PhotoPickUtil;
 import com.facebook.rebound.SpringConfig;
 import com.jpeng.jpspringmenu.MenuListener;
 import com.jpeng.jpspringmenu.SpringMenu;
@@ -40,6 +41,10 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.myproject.MyApp.AVATAR_FILE_NAME;
+import static com.example.myproject.utils.PhotoPickUtil.CROP_PHOTO;
+import static com.example.myproject.utils.PhotoPickUtil.FINISH_CROP;
+import static com.example.myproject.utils.PhotoPickUtil.REQUEST_PERMISSION;
+import static com.example.myproject.utils.PhotoPickUtil.cropPhoto;
 
 
 public class HomepageActivity extends AppCompatActivity implements View.OnClickListener, MenuListener {
@@ -53,9 +58,6 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     ImageView news;
 
 
-    private static final int REQUEST_PERMISSION = 0;
-    private static final int FINISH_CROP = 1;
-    private static final int CROP_PHOTO = 2;
 
     HomeFragment homeFragment;
     NewsFragment newsFragment;
@@ -196,31 +198,14 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent_set);
                 break;
             case R.id.civ_avatar:
-                openAlbum();
+                PhotoPickUtil.openAlbum(this);
 
                 break;
         }
     }
 
 
-    public void openAlbum() {
-        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, CROP_PHOTO);
-            } else {
-                requestPermissions(perms, REQUEST_PERMISSION);
-
-            }
-        } else {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult(intent, CROP_PHOTO);
-        }
-    }
 
 
     @Override
@@ -228,7 +213,7 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         switch (requestCode) {
             case REQUEST_PERMISSION:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openAlbum();
+                    PhotoPickUtil.openAlbum(this);
                 }
 
         }
@@ -270,30 +255,7 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private Intent cropPhoto(Uri oriImageUri) {
 
-        try {
-
-            Intent intent = new Intent("com.android.camera.action.CROP");
-
-            intent.putExtra("crop", true);
-            intent.putExtra("aspectX", 1);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.putExtra("aspectY", 1);
-            intent.putExtra("outputX", ConvertUtils.dp2px(90));
-            intent.putExtra("outputY", ConvertUtils.dp2px(90));
-            intent.putExtra("scale", true);
-            intent.putExtra("return-data", true);
-            intent.setDataAndType(oriImageUri, "image/*");
-            intent.putExtra("noFaceDetection", true);
-            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-            return intent;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
 

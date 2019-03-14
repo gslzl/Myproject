@@ -8,6 +8,8 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.baidu.mapapi.CoordType;
+import com.baidu.mapapi.SDKInitializer;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
 import com.lzy.okgo.OkGo;
@@ -25,7 +27,8 @@ public class MyApp extends Application {
 
     public static final String UPLOAD_AVATAR_URL = "http://120.79.87.68:5000/insertAvatar";
     public static final String AVATAR_FILE_NAME = "spec_avatar.png";
-    private static final String tag = "IM配置-----";
+    public static final String PUBLISH_GOODS_IMG_NAME="publish_goods.jpeg";
+    public static final String PUBLISH_GOODS_URL =  "http://120.79.87.68:5000/insertProduct";
 
 
     @Override
@@ -44,6 +47,10 @@ public class MyApp extends Application {
             // 在主进程中初始化UI组件，判断所属进程方法请参见demo源码。
             NimUIKit.init(this);
         }
+        SDKInitializer.initialize(this);
+        //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
+        SDKInitializer.setCoordType(CoordType.BD09LL);
+
     }
 
 
