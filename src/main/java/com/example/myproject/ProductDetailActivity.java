@@ -128,7 +128,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 OkGo.<String>post(makeup_url)
                         .params("user_ID", SPUtils.getInstance().getString("str_login_number"))
                         .params("product_ID", now_id)
-                        .params("my_price", now_price + now_range)
+                        .params("my_price", Float.valueOf(now_price) + Float.valueOf(now_range))
                         .params("state", "0")
                         .execute(new StringCallback() {
                             @Override
