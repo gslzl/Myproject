@@ -8,9 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.myproject.bean.UserBean;
-import com.example.myproject.fragments.LoginFragment;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -22,7 +22,7 @@ import butterknife.OnClick;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
-    LoginFragment str_login_number;
+
     @InjectView(R.id.new_password)
     EditText newPassword;
     @InjectView(R.id.old_password)
@@ -55,7 +55,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 str_newPassword = newPassword.getText().toString().trim();
                 str_oldPassword = oldPassword.getText().toString().trim();
                     OkGo.<String>post(url)
-                            .params("phone_number", String.valueOf(str_login_number))
+                            .params("phone_number", SPUtils.getInstance().getString("str_login_number"))
                             .params("old_password",str_oldPassword)
                             .params("password", str_newPassword)
                             .execute(new StringCallback() {

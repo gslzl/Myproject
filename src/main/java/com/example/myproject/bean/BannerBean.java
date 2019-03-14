@@ -40,10 +40,29 @@ public class BannerBean implements Serializable {
         public String picture;
         public String person_number;
         public String information;
-        public String star_price;
+        public String start_price;
         public String current_price;
         public String time;
         public String state;
+        public String latitude;
+        public String longitude;
+
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
+        }
 
         public String getPerson_number() {
             return person_number;
@@ -93,12 +112,12 @@ public class BannerBean implements Serializable {
             this.information = information;
         }
 
-        public String getStar_price() {
-            return star_price;
+        public String getStart_price() {
+            return start_price;
         }
 
-        public void setStar_price(String star_price) {
-            this.star_price = star_price;
+        public void setStart_price(String star_price) {
+            this.start_price = star_price;
         }
 
         public String getCurrent_price() {

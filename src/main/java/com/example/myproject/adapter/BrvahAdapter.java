@@ -14,6 +14,8 @@ import java.util.List;
 
 public class BrvahAdapter extends BaseQuickAdapter<BannerBean.bannerBean, BaseViewHolder>{
 
+    String now_state;
+    String show_state;
     ImageView picture;
     Context context ;
     public BrvahAdapter(int layoutResId, @Nullable List<BannerBean.bannerBean> data, Context context) {
@@ -24,6 +26,7 @@ public class BrvahAdapter extends BaseQuickAdapter<BannerBean.bannerBean, BaseVi
     @Override
     protected void convert(BaseViewHolder helper, BannerBean.bannerBean item) {
 
+        now_state = item.state;
         picture = helper.getView(R.id.tl_picture);
         Glide.with(context)
                 .load(item.picture)
@@ -31,7 +34,14 @@ public class BrvahAdapter extends BaseQuickAdapter<BannerBean.bannerBean, BaseVi
         helper.setText(R.id.tl_information,item.name);
         helper.setText(R.id.number,item.person_number);
         helper.setText(R.id.price,item.current_price);
-        helper.setText(R.id.state,item.state);
+
+        if (now_state.equals("1")) {
+            show_state = "已结束";
+        }
+        else {
+            show_state = "竞拍中";
+        }
+        helper.setText(R.id.state,show_state);
     }
 }
 

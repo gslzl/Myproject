@@ -12,7 +12,7 @@
         android:background="@drawable/background"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
 
@@ -36,7 +36,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/pingfang"
                 android:gravity="center"
-                android:text="奇虎大红袍不甜不要钱"
+                android:text="商品详情"
                 android:textColor="#ffffff"
                 android:textSize="22sp"
                 tools:layout_editor_absoluteX="93dp"
@@ -48,8 +48,8 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            app:cardCornerRadius="20dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:cardCornerRadius="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,9 +66,8 @@
                     <ImageView
                         android:id="@+id/imageView"
                         android:layout_width="match_parent"
-                        android:layout_height="289dp"
-                        app:srcCompat="@drawable/productbanner"
-                        android:scaleType="fitXY"/>
+                        android:layout_height="286dp"
+                        android:scaleType="fitXY" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -76,41 +75,56 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/linearlayoutpadding"
                     android:orientation="vertical">
-
-                    <TextView
-                        android:paddingTop="5dp"
-                        android:id="@+id/infor"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/pingfang"
-                        android:inputType="textMultiLine"
-                        android:text="1982年大红袍现跳楼价甩卖，希望爱茶人士打包带走"
-                        android:textColor="#000000"
-                        android:textSize="22sp" />
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/infor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/pingfang"
+                            android:inputType="textMultiLine"
+                            android:paddingTop="5dp"
+                            android:textColor="#000000"
+                            android:textSize="22sp" />
+
+                        <ImageView
+                            android:id="@+id/map"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:clickable="true"
+                            android:src="@drawable/icon_location" />
+                    </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="91dp"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="103dp"
-                            android:gravity="center_vertical"
+                            android:layout_height="match_parent"
                             android:orientation="vertical">
+
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="25dp"
                                 android:orientation="horizontal">
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/pingfang"
                                     android:text="原价:  ￥"
                                     android:textColor="#797979"
-                                    android:textSize="18sp"/>
+                                    android:textSize="18sp" />
+
                                 <TextView
                                     android:id="@+id/prime"
                                     android:layout_width="wrap_content"
@@ -124,49 +138,82 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
+
                                 <TextView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="49dp" android:fontFamily="@font/pingfang"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/pingfang"
                                     android:text="竞拍价：¥"
                                     android:textColor="#B52500"
-                                    android:textSize="24sp"
-                                    />
+                                    android:textSize="20sp" />
+
                                 <TextView
                                     android:id="@+id/auction"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="49dp"
+                                    android:layout_height="wrap_content"
                                     android:fontFamily="@font/pingfang"
+                                    android:gravity="center_vertical"
                                     android:textColor="#B52500"
-                                    android:textSize="24sp" />
+                                    android:textSize="20sp" />
 
                             </LinearLayout>
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/free_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="41dp"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/pingfang"
-                            android:gravity="center"
-                            android:text="00:00:01"
-                            android:textColor="#b52500"
-                            android:textSize="30sp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/free_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/pingfang"
+                                android:gravity="center"
+                                android:textColor="#b52500"
+                                android:textSize="25sp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="20dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/pingfang"
+                                    android:text="加价幅度:  ￥"
+                                    android:textColor="#797979"
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:id="@+id/range"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/pingfang"
+                                    android:textColor="#797979"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="137dp"
-                        android:orientation="vertical"
-                        android:background="@drawable/linearlayoutframe">
+                        android:background="@drawable/linearlayoutframe"
+                        android:orientation="vertical">
+
                         <TextView
-                            android:paddingTop="5dp"
                             android:id="@+id/intro"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/pingfang"
+                            android:gravity="center"
                             android:inputType="textMultiLine"
-                            android:text="    100%正品，1982年生产，没馊没坏没变味没发霉。我求求各位小哥哥小姐姐们，快来买吧，不买我真的就没钱吃饭了，我要饿死了。"
+                            android:paddingTop="5dp"
                             android:textColor="#797979"
                             android:textSize="18sp" />
                     </LinearLayout>
@@ -183,7 +230,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/communication"
                             android:fontFamily="@font/pingfang"
-                            android:text="    联系卖家"
+                            android:text="     联系卖家"
                             android:textColor="#B52500"
                             android:textSize="18sp" />
 
@@ -194,7 +241,18 @@
                             android:layout_weight="1"
                             android:background="@drawable/increaseprice"
                             android:fontFamily="@font/pingfang"
-                            android:text="    我要加价"
+                            android:text="     我要加价"
+                            android:textColor="#b52500"
+                            android:textSize="18sp" />
+
+                        <Button
+                            android:id="@+id/get_fav"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/increaseprice"
+                            android:fontFamily="@font/pingfang"
+                            android:text="     我要收藏"
                             android:textColor="#b52500"
                             android:textSize="18sp" />
                     </LinearLayout>

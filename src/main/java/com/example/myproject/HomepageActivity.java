@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.SPUtils;
@@ -66,6 +67,7 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
     LinearLayout layoutCustomerService;
     LinearLayout layoutSetting;
     CircleImageView userAvatar;
+    TextView name;
 
 
     @Override
@@ -95,13 +97,14 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         menu.setDirection(SpringMenu.DIRECTION_LEFT);
         menu.setDragOffset(0.4f);
 
-
+        name = menu.findViewById(R.id.tv_nickname);
         userAvatar = menu.getMenuView().findViewById(R.id.civ_avatar);
         layoutOrderManage = menu.getMenuView().findViewById(R.id.layout_order_manage);
         layoutCollection = menu.getMenuView().findViewById(R.id.layout_collection);
         layoutCustomerService = menu.getMenuView().findViewById(R.id.layout_customer_service);
         layoutSetting = menu.getMenuView().findViewById(R.id.layout_setting);
 
+        name.setText(SPUtils.getInstance().getString("str_nick_name"));
         layoutSetting.setOnClickListener(this);
         layoutCollection.setOnClickListener(this);
         layoutCustomerService.setOnClickListener(this);
@@ -137,18 +140,6 @@ public class HomepageActivity extends AppCompatActivity implements View.OnClickL
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction.replace(R.id.home_fragment, fragment);
-
-        fragmentTransaction.commit();
-
-    }
-
-    public void SearchReplace(Fragment fragment) {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.replace(R.id.hot_search, fragment);
 
         fragmentTransaction.commit();
 

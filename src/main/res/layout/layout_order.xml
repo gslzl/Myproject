@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -27,7 +28,6 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/timepng"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_gravity="center"
@@ -36,23 +36,21 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/timedate"
+                android:id="@+id/time_date"
                 android:layout_width="221dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="@font/pingfang"
                 android:gravity="center_vertical"
-                android:text="2019-03-08"
                 android:textColor="#797979" />
 
             <TextView
-                android:id="@+id/timeclock"
+                android:id="@+id/time_clock"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="@font/pingfang"
                 android:gravity="center"
-                android:text="21:43"
                 android:textColor="#797979" />
         </LinearLayout>
 
@@ -62,70 +60,101 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:layout_width="90dp"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/productpng"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:id="@+id/product_png"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="fitXY"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/product" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_weight="1"
-                android:layout_width="153dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/productname"
-                    android:layout_width="140dp"
-                    android:layout_height="33dp"
+                    android:id="@+id/product_name"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
                     android:fontFamily="@font/pingfang"
                     android:gravity="center_vertical"
-                    android:text="1982年的猕猴桃"
                     android:textColor="#797979"
                     android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/productnum"
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pingfang"
-                    android:text="数量：1"
-                    android:textColor="#797979"
-                    android:textSize="13sp" />
+                <!--<TextView-->
+                    <!--android:id="@+id/productnum"-->
+                    <!--android:layout_width="140dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:fontFamily="@font/pingfang"-->
+                    <!--android:text="数量：1"-->
+                    <!--android:textColor="#797979"-->
+                    <!--android:textSize="13sp" />-->
             </LinearLayout>
 
             <LinearLayout
                 android:layout_weight="1"
-                android:layout_width="114dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/pricebefore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="33dp"
-                    android:fontFamily="@font/pingfang"
-                    android:gravity="center"
-                    android:text="原价：¥188"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/pricenow"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pingfang"
-                    android:text="竞拍价：¥9.9"
-                    android:textColor="#B52500" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:fontFamily="@font/pingfang"
+                        android:text="原价：¥"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/price_before"
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:fontFamily="@font/pingfang"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:fontFamily="@font/pingfang"
+                        android:text="竞拍价：¥"
+                        android:textColor="#B52500" />
+                    <TextView
+                        android:id="@+id/price_now"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:fontFamily="@font/pingfang"
+                        android:textColor="#B52500" />
+                </LinearLayout>
+
+
+
+
             </LinearLayout>
 
         </LinearLayout>
@@ -136,9 +165,10 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/gotopay"
+                android:id="@+id/wait"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:visibility="visible"
                 android:layout_weight="1"
                 android:fontFamily="@font/pingfang"
                 android:gravity="center"
@@ -151,6 +181,7 @@
                 android:layout_width="18dp"
                 android:layout_height="32dp"
                 android:layout_weight="1"
+                android:visibility="visible"
                 android:background="@drawable/buttonbackground"
                 android:button="@null"
                 android:fontFamily="@font/pingfang"
@@ -164,6 +195,7 @@
                 android:layout_width="18dp"
                 android:layout_height="32dp"
                 android:layout_weight="1"
+                android:visibility="visible"
                 android:background="@drawable/buttonbackgroundred"
                 android:button="@null"
                 android:fontFamily="@font/pingfang"

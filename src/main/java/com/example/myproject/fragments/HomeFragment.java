@@ -1,8 +1,6 @@
 package com.example.myproject.fragments;
 
 
-
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -61,6 +59,7 @@ public class HomeFragment extends Fragment {
     String inforUrl;
     String infor;
     String searchUrl;
+    String catalog = "";
     int i;
     boolean isFirst = false;
 
@@ -77,6 +76,7 @@ public class HomeFragment extends Fragment {
     NestedScrollView nestedScrollView;
     List<BannerBean.bannerBean> bannerBeans = new ArrayList<>();
     SearchFragment searchFragment = new SearchFragment();
+    CatalogFragment catalogFragment = new CatalogFragment();
     Bundle bundle = new Bundle();
 
     @InjectView(R.id.Phone)
@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
         nestedScrollView = view.findViewById(R.id.nest_sv);
         mSwipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
-        SpaceItem spaceItem = new SpaceItem(15);
+        SpaceItem spaceItem = new SpaceItem(35);
         product.addItemDecoration(spaceItem);
         madapter = new BrvahAdapter(R.layout.layout_product, bannerBeans, getActivity());
         product.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
@@ -152,7 +152,7 @@ public class HomeFragment extends Fragment {
         banner.setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
-                Glide.with(context).load((String) path).into(imageView);
+                Glide.with(context).load((String)path).into(imageView);
             }
         });
         mSwipeRefreshLayout.setColorSchemeColors(Color.rgb(47, 223, 189));
@@ -195,7 +195,7 @@ public class HomeFragment extends Fragment {
                                 if(bannerBean.getCode().equals("1")){
                                     bundle.putSerializable("search_banner", bannerBean);
                                     searchFragment.setArguments(bundle);
-                                    ((HomepageActivity)getActivity()).SearchReplace(searchFragment);
+                                    ((HomepageActivity)getActivity()).HomeReplace(searchFragment);
                                 }
                                 else {
                                     ToastUtils.showShort("无检索内容！");
@@ -242,9 +242,9 @@ public class HomeFragment extends Fragment {
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
-                                ProductBean ProductBeann = new Gson().fromJson(response.body(), ProductBean.class);
+                                ProductBean productBean = new Gson().fromJson(response.body(), ProductBean.class);
                                 Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
-                                intent.putExtra("ProductBeann", ProductBeann);
+                                intent.putExtra("productBean", productBean);
                                 startActivity(intent);
 
                             }
@@ -278,9 +278,9 @@ public class HomeFragment extends Fragment {
                                                     .execute(new StringCallback() {
                                                         @Override
                                                         public void onSuccess(Response<String> response) {
-                                                            ProductBean ProductBeann = new Gson().fromJson(response.body(), ProductBean.class);
+                                                            ProductBean productBean = new Gson().fromJson(response.body(), ProductBean.class);
                                                             Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
-                                                            intent.putExtra("ProductBeann", ProductBeann);
+                                                            intent.putExtra("productBean", productBean);
                                                             startActivity(intent);
                                                         }
                                                     });
@@ -291,12 +291,6 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-//        banner.setOnBannerListener(new OnBannerListener() {
-//            @Override
-//            public void OnBannerClick(int position) {
-//
-//            }
-//        });
     }
 
 
@@ -310,25 +304,50 @@ public class HomeFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Phone:
-                ToastUtils.showShort("phone");
+                catalog = "phone";
                 break;
             case R.id.Live:
+                catalog = "live";
                 break;
             case R.id.Pc:
+                catalog = "pc";
                 break;
             case R.id.Bag:
+                catalog = "bag";
                 break;
             case R.id.Toys:
+                catalog = "toys";
                 break;
             case R.id.Cosmetics:
+                catalog = "cosmetics";
                 break;
             case R.id.Luxury:
+                catalog = "luxury";
                 break;
             case R.id.Gold:
+                catalog = "gold";
                 break;
             case R.id.Vt:
+                catalog = "vt";
                 break;
         }
+        OkGo.<String>post(infor)
+                .params("catalog",catalog)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        BannerBean bannerBean = new Gson().fromJson(response.body(),BannerBean.class);
+                        if(bannerBean.getCode().equals("1")){
+                            bundle.putSerializable("catalog_banner", bannerBean);
+                            catalogFragment.setArguments(bundle);
+                            ((HomepageActivity)getActivity()).HomeReplace(catalogFragment);
+                        }
+                        else {
+                            ToastUtils.showShort("暂无此类别商品！");
+                            return;
+                        }
+                    }
+                });
     }
 
 

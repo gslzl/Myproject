@@ -15,7 +15,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.myproject.ProductDetailActivity;
 import com.example.myproject.R;
-import com.example.myproject.adapter.SearchAdapter;
+import com.example.myproject.adapter.BrvahAdapter;
 import com.example.myproject.adapter.SpaceItem;
 import com.example.myproject.bean.BannerBean;
 import com.example.myproject.bean.ProductBean;
@@ -29,41 +29,49 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends Fragment {
+public class CatalogFragment extends Fragment {
 
-    RecyclerView rv_search;
-    SearchAdapter searchAdapter;
-    View view;
-    List<BannerBean.bannerBean> searchBean = new ArrayList<>();
+    List<BannerBean.bannerBean> catalogBean = new ArrayList<>();
     List<String> Id = new ArrayList<>();
     String infor;
     String searchUrl;
+    BrvahAdapter catalogAdapter;
+
+
+    @InjectView(R.id.head_image)
+    CircleImageView headImage;
     @InjectView(R.id.search_new)
     SearchView searchNew;
+    @InjectView(R.id.rv_catalog)
+    RecyclerView rvCatalog;
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_search, container, false);
-        infor = "http://120.79.87.68:5000/getProduct";
-        searchUrl = "http://120.79.87.68:5000/search";
-        rv_search = view.findViewById(R.id.rv_search);
-        SpaceItem spaceItem = new SpaceItem(35);
-        rv_search.addItemDecoration(spaceItem);
-        searchAdapter = new SearchAdapter(R.layout.layout_search, searchBean, getActivity());
-        rv_search.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        rv_search.setAdapter(searchAdapter);
-
-        searchBean.clear();
-        getTransitiveData();
+        View view = inflater.inflate(R.layout.fragment_catalog, container, false);
 
         ButterKnife.inject(this, view);
+        searchUrl = "http://120.79.87.68:5000/search";
+        infor = "http://120.79.87.68:5000/getProduct";
+
+        SpaceItem spaceItem = new SpaceItem(35);
+        rvCatalog.addItemDecoration(spaceItem);
+
+        catalogAdapter = new BrvahAdapter(R.layout.layout_product, catalogBean, getActivity());
+        rvCatalog.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        rvCatalog.setAdapter(catalogAdapter);
+
+        catalogBean.clear();
+        getCatalog();
+
         searchNew.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -74,13 +82,13 @@ public class SearchFragment extends Fragment {
                             public void onSuccess(Response<String> response) {
                                 BannerBean bannerBean = new Gson().fromJson(response.body(),BannerBean.class);
                                 if(bannerBean.getCode().equals("1")){
-                                    searchBean.clear();
-                                    searchBean.addAll(bannerBean.getData());
-                                    searchAdapter.setNewData(searchBean);
+                                    catalogBean.clear();
+                                    catalogBean.addAll(bannerBean.getData());
+                                    catalogAdapter.setNewData(catalogBean);
                                     for (BannerBean.bannerBean element : bannerBean.getData()) {
                                         Id.add(element.getID());
                                     }
-                                    searchAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                                    catalogAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                                             OkGo.<String>post(infor)
@@ -114,17 +122,15 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-    private void getTransitiveData() {
+    private void getCatalog() {
         Bundle bundle = getArguments();
-        BannerBean search_banner = (BannerBean) bundle.getSerializable("search_banner");
-        searchBean.addAll(search_banner.getData());
-        searchAdapter.setNewData(searchBean);
-
-
-        for (BannerBean.bannerBean element : search_banner.getData()) {
+        BannerBean catalog_banner = (BannerBean) bundle.getSerializable("catalog_banner");
+        catalogBean.addAll(catalog_banner.getData());
+        catalogAdapter.setNewData(catalogBean);
+        for (BannerBean.bannerBean element : catalog_banner.getData()) {
             Id.add(element.getID());
         }
-        searchAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        catalogAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 OkGo.<String>post(infor)
@@ -140,7 +146,6 @@ public class SearchFragment extends Fragment {
                         });
             }
         });
-
     }
 
     @Override

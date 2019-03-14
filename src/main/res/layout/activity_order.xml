@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,13 +11,13 @@
         android:background="@drawable/background">
 
         <LinearLayout
-            android:layout_width="411dp"
+            android:layout_width="match_parent"
             android:layout_height="22dp"
             android:orientation="vertical">
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="411dp"
+            android:layout_width="match_parent"
             android:layout_height="64dp"
             android:orientation="vertical"
             tools:layout_editor_absoluteX="0dp"
@@ -45,20 +44,19 @@
             android:orientation="vertical"
             android:elevation="20dp">
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:background="@drawable/scrollviewshape"
                 android:orientation="vertical">
 
                 <RadioGroup
-                    android:id="@+id/list1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
                     android:background="@null"
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/radioButton_pay"
+                        android:id="@+id/order_pay"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -68,11 +66,10 @@
                         android:gravity="center"
                         android:text="购买订单"
                         android:textColor="@drawable/selector_color_view"
-                        android:background="@drawable/select1"
                         android:textSize="15sp" />
 
                     <RadioButton
-                        android:id="@+id/radioButton_sell"
+                        android:id="@+id/order_sell"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -95,14 +92,13 @@
                 android:orientation="horizontal">
 
                 <RadioGroup
-                    android:id="@+id/list2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/radioButton_all"
+                        android:id="@+id/all"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -111,13 +107,12 @@
                         android:fontFamily="@font/pingfang"
                         android:gravity="center"
                         android:text="全部"
-                        android:background="@drawable/select1"
                         android:textColor="@drawable/selector_color_view"
                         android:checked="true"
                         android:textSize="15sp" />
 
                     <RadioButton
-                        android:id="@+id/radioButton_doing"
+                        android:id="@+id/order_ing"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -130,7 +125,7 @@
                         android:textSize="15sp" />
 
                     <RadioButton
-                        android:id="@+id/radioButton_did"
+                        android:id="@+id/order_deliver"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -143,7 +138,7 @@
                         android:textSize="15sp" />
 
                     <RadioButton
-                        android:id="@+id/radioButton_done"
+                        android:id="@+id/order_finish"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
