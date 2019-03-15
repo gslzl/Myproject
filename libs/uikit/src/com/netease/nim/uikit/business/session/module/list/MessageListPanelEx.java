@@ -9,10 +9,13 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.netease.nim.uikit.api.model.main.CustomPushContentProvider;
+import com.netease.nim.uikit.common.ToastHelper;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
@@ -26,6 +29,7 @@ import com.netease.nim.uikit.business.session.helper.MessageHelper;
 import com.netease.nim.uikit.business.session.helper.MessageListPanelHelper;
 import com.netease.nim.uikit.business.session.module.Container;
 import com.netease.nim.uikit.business.session.viewholder.robot.RobotLinkView;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialog;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
@@ -48,6 +52,7 @@ import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
+import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
@@ -69,12 +74,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+
 
 /**
  * 基于RecyclerView的消息收发模块
  * Created by huangjun on 2016/12/27.
  */
 public class MessageListPanelEx {
+    private final static String TAG = "MessageListPanelEx";
 
     private static final int REQUEST_CODE_FORWARD_PERSON = 0x01;
     private static final int REQUEST_CODE_FORWARD_TEAM = 0x02;
@@ -87,7 +95,7 @@ public class MessageListPanelEx {
     private RecyclerView messageListView;
     private List<IMMessage> items;
     private MsgAdapter adapter;
-    private ImageView listviewBk;
+    private ImageView ivBackground;
 
     // 新消息到达提醒
     private IncomingMsgPrompt incomingMsgPrompt;
@@ -106,6 +114,11 @@ public class MessageListPanelEx {
 
     // 背景图片缓存
     private static Pair<String, Bitmap> background;
+
+    //如果在发需要拍照 的消息时，拍照回来时页面可能会销毁重建，重建时会在MessageLoader 的构造方法中调一次 loadFromLocal
+    //而在发送消息后，list 需要滚动到底部，又会通过RequestFetchMoreListener 调用一次 loadFromLocal
+    //所以消息会重复
+    private boolean mIsInitFetchingLocal;
 
     public MessageListPanelEx(Container container, View rootView, boolean recordOnly, boolean remote) {
         this(container, rootView, null, recordOnly, remote);
@@ -147,7 +160,6 @@ public class MessageListPanelEx {
         if (adapter != null) {
             adapter.clearData();
         }
-
         initFetchLoadListener(anchor);
     }
 
@@ -163,10 +175,10 @@ public class MessageListPanelEx {
     }
 
     private void initListView(IMMessage anchor) {
-        listviewBk = (ImageView) rootView.findViewById(R.id.message_activity_background);
+        ivBackground = rootView.findViewById(R.id.message_activity_background);
 
         // RecyclerView
-        messageListView = (RecyclerView) rootView.findViewById(R.id.messageListView);
+        messageListView = rootView.findViewById(R.id.messageListView);
         messageListView.setLayoutManager(new LinearLayoutManager(container.activity));
         messageListView.requestDisallowInterceptTouchEvent(true);
         messageListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -203,33 +215,41 @@ public class MessageListPanelEx {
 
         @Override
         public void onItemChildClick(IRecyclerView adapter2, View view, int position) {
-            if (isSessionMode() && view != null && view instanceof RobotLinkView) {
-                RobotLinkView robotLinkView = (RobotLinkView) view;
-                // robotLinkView.onClick();
-                LinkElement element = robotLinkView.getElement();
-                if (element != null) {
-                    element.getTarget();
-                    if (LinkElement.TYPE_URL.equals(element.getType())) {
-                        Intent intent = new Intent();
-                        intent.setAction("android.intent.action.VIEW");
-                        Uri content_url = Uri.parse(element.getTarget());
-                        intent.setData(content_url);
-                        try {
-                            container.activity.startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
-                            Toast.makeText(container.activity, "路径错误", Toast.LENGTH_SHORT).show();
-                        }
 
-                    } else if (LinkElement.TYPE_BLOCK.equals(element.getType())) {
-                        // 发送点击的block
-                        IMMessage message = adapter.getItem(position);
-                        if (message != null) {
-                            String robotAccount = ((RobotAttachment) message.getAttachment()).getFromRobotAccount();
-                            IMMessage robotMsg = MessageBuilder.createRobotMessage(message.getSessionId(), message.getSessionType(), robotAccount,
-                                    robotLinkView.getShowContent(), RobotMsgType.LINK, "", element.getTarget(), element.getParams());
-                            container.proxy.sendMessage(robotMsg);
-                        }
-                    }
+            if (!isSessionMode() || !(view instanceof RobotLinkView)) {
+                return;
+            }
+
+            RobotLinkView robotLinkView = (RobotLinkView) view;
+            LinkElement element = robotLinkView.getElement();
+            if (element == null) {
+                return;
+            }
+            if (LinkElement.TYPE_URL.equals(element.getType())) {
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = Uri.parse(element.getTarget());
+                intent.setData(content_url);
+                try {
+                    container.activity.startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    ToastHelper.showToast(container.activity, "路径错误");
+                }
+
+            } else if (LinkElement.TYPE_BLOCK.equals(element.getType())) {
+                // 发送点击的block
+                IMMessage message = adapter.getItem(position);
+                if (message != null) {
+                    String robotAccount = ((RobotAttachment) message.getAttachment()).getFromRobotAccount();
+                    IMMessage robotMsg = MessageBuilder.createRobotMessage(message.getSessionId(),
+                            message.getSessionType(),
+                            robotAccount,
+                            robotLinkView.getShowContent(),
+                            RobotMsgType.LINK,
+                            "",
+                            element.getTarget(),
+                            element.getParams());
+                    container.proxy.sendMessage(robotMsg);
                 }
             }
         }
@@ -241,7 +261,6 @@ public class MessageListPanelEx {
 
     private void initFetchLoadListener(IMMessage anchor) {
         MessageLoader loader = new MessageLoader(anchor, remote);
-
         if (recordOnly && !remote) {
             // 双向Load
             adapter.setOnFetchMoreListener(loader);
@@ -254,8 +273,7 @@ public class MessageListPanelEx {
 
     // 刷新消息列表
     public void refreshMessageList() {
-        container.activity.runOnUiThread(new Runnable() {
-
+        uiHandler.post(new Runnable() {
             @Override
             public void run() {
                 adapter.notifyDataSetChanged();
@@ -342,25 +360,6 @@ public class MessageListPanelEx {
     };
 
     /**
-     * ************************* 观察者 ********************************
-     */
-
-    private void registerObservers(boolean register) {
-        MsgServiceObserve service = NIMClient.getService(MsgServiceObserve.class);
-        service.observeMsgStatus(messageStatusObserver, register);
-        service.observeAttachmentProgress(attachmentProgressObserver, register);
-        service.observeRevokeMessage(revokeMessageObserver, register);
-        if (register) {
-            registerUserInfoObserver();
-        } else {
-            unregisterUserInfoObserver();
-        }
-        service.observeTeamMessageReceipt(teamMessageReceiptObserver, register);
-
-        MessageListPanelHelper.getInstance().registerObserver(incomingLocalMessageObserver, register);
-    }
-
-    /**
      * 消息状态变化观察者
      */
     private Observer<IMMessage> messageStatusObserver = new Observer<IMMessage>() {
@@ -383,6 +382,56 @@ public class MessageListPanelEx {
     };
 
     /**
+     * 消息撤回观察者
+     */
+    private Observer<RevokeMsgNotification> revokeMessageObserver = new Observer<RevokeMsgNotification>() {
+        @Override
+        public void onEvent(RevokeMsgNotification notification) {
+            if (notification == null || notification.getMessage() == null) {
+                return;
+            }
+            IMMessage message = notification.getMessage();
+            // 获取通知类型： 1表示是离线，2表示是漫游 ， 默认 0
+            Log.i(TAG, "notification type = " + notification.getNotificationType());
+
+            if (!container.account.equals(message.getSessionId())) {
+                return;
+            }
+
+            deleteItem(message, false);
+        }
+    };
+
+    /**
+     * 群消息已读回执观察者
+     */
+    private Observer<List<TeamMessageReceipt>> teamMessageReceiptObserver = new Observer<List<TeamMessageReceipt>>() {
+        @Override
+        public void onEvent(List<TeamMessageReceipt> teamMessageReceipts) {
+            for (TeamMessageReceipt teamMessageReceipt : teamMessageReceipts) {
+                int index = getItemIndex(teamMessageReceipt.getMsgId());
+                if (index >= 0 && index < items.size()) {
+                    refreshViewHolderByIndex(index);
+                }
+            }
+        }
+    };
+    /**
+     * 用户信息观察者
+     */
+    private UserInfoObserver userInfoObserver = new UserInfoObserver() {
+        @Override
+        public void onUserInfoChanged(List<String> accounts) {
+            if (container.sessionType == SessionTypeEnum.P2P) {
+                if (accounts.contains(container.account) || accounts.contains(NimUIKit.getAccount())) {
+                    adapter.notifyDataSetChanged();
+                }
+            } else { // 群的，简单的全部重刷
+                adapter.notifyDataSetChanged();
+            }
+        }
+    };
+    /**
      * 本地消息接收观察者
      */
     private MessageListPanelHelper.LocalMessageObserver incomingLocalMessageObserver = new MessageListPanelHelper.LocalMessageObserver() {
@@ -391,7 +440,6 @@ public class MessageListPanelEx {
             if (message == null || !container.account.equals(message.getSessionId())) {
                 return;
             }
-
             onMsgSend(message);
         }
 
@@ -404,53 +452,36 @@ public class MessageListPanelEx {
     };
 
     /**
-     * 消息撤回观察者
+     * ************************* 观察者 ********************************
      */
-    private Observer<RevokeMsgNotification> revokeMessageObserver = new Observer<RevokeMsgNotification>() {
-        @Override
-        public void onEvent(RevokeMsgNotification notification) {
-            if (notification == null || notification.getMessage() == null) {
-                return;
-            }
-            IMMessage message = notification.getMessage();
+    private void registerObservers(boolean register) {
+        MsgServiceObserve service = NIMClient.getService(MsgServiceObserve.class);
+        service.observeMsgStatus(messageStatusObserver, register);
+        service.observeAttachmentProgress(attachmentProgressObserver, register);
+        service.observeRevokeMessage(revokeMessageObserver, register);
+        service.observeTeamMessageReceipt(teamMessageReceiptObserver, register);
 
-            if (!container.account.equals(message.getSessionId())) {
-                return;
-            }
+        NimUIKit.getUserInfoObservable().registerObserver(userInfoObserver, register);
+        MessageListPanelHelper.getInstance().registerObserver(incomingLocalMessageObserver, register);
+    }
 
-            deleteItem(message, false);
-        }
-    };
-
-    private Observer<List<TeamMessageReceipt>> teamMessageReceiptObserver = new Observer<List<TeamMessageReceipt>>() {
-        @Override
-        public void onEvent(List<TeamMessageReceipt> teamMessageReceipts) {
-            for (TeamMessageReceipt teamMessageReceipt : teamMessageReceipts) {
-                int index = getItemIndex(teamMessageReceipt.getMsgId());
-                if (index >= 0 && index < items.size()) {
-                    refreshViewHolderByIndex(index);
-                }
-            }
-        }
-    };
 
     private void onMessageStatusChange(IMMessage message) {
         int index = getItemIndex(message.getUuid());
         if (index >= 0 && index < items.size()) {
-            IMMessage item = items.get(index);
-            item.setStatus(message.getStatus());
-            item.setAttachStatus(message.getAttachStatus());
-
-            // 处理语音、音视频通话
-            if (item.getMsgType() == MsgTypeEnum.audio || item.getMsgType() == MsgTypeEnum.avchat) {
-                item.setAttachment(message.getAttachment()); // 附件可能更新了
-            }
-
-            // resend的的情况，可能时间已经变化了，这里要重新检查是否要显示时间
+//            IMMessage item = items.get(index);
+//            item.setStatus(message.getStatus());
+//            item.setAttachStatus(message.getAttachStatus());
+//            // 处理语音、音视频通话
+//            if (item.getMsgType() == MsgTypeEnum.audio || item.getMsgType() == MsgTypeEnum.avchat) {
+//                item.setAttachment(message.getAttachment()); // 附件可能更新了
+//            }
+//
+            items.set(index, message);
+//            // resend的的情况，可能时间已经变化了，这里要重新检查是否要显示时间
             List<IMMessage> msgList = new ArrayList<>(1);
             msgList.add(message);
             adapter.updateShowTimeItem(msgList, false, true);
-
             refreshViewHolderByIndex(index);
         }
     }
@@ -465,7 +496,7 @@ public class MessageListPanelEx {
         }
     }
 
-    public boolean isMyMessage(IMMessage message) {
+    private boolean isMyMessage(IMMessage message) {
         return message.getSessionType() == container.sessionType
                 && message.getSessionId() != null
                 && message.getSessionId().equals(container.account);
@@ -475,14 +506,12 @@ public class MessageListPanelEx {
      * 刷新单条消息
      */
     private void refreshViewHolderByIndex(final int index) {
-        container.activity.runOnUiThread(new Runnable() {
-
+        uiHandler.post(new Runnable() {
             @Override
             public void run() {
                 if (index < 0) {
                     return;
                 }
-
                 adapter.notifyDataItemChanged(index);
             }
         });
@@ -495,7 +524,6 @@ public class MessageListPanelEx {
                 return i;
             }
         }
-
         return -1;
     }
 
@@ -503,7 +531,7 @@ public class MessageListPanelEx {
         if (uriString != null) {
             Uri uri = Uri.parse(uriString);
             if (uri.getScheme().equalsIgnoreCase("file") && uri.getPath() != null) {
-                listviewBk.setImageBitmap(getBackground(uri.getPath()));
+                ivBackground.setImageBitmap(getBackground(uri.getPath()));
             } else if (uri.getScheme().equalsIgnoreCase("android.resource")) {
                 List<String> paths = uri.getPathSegments();
                 if (paths == null || paths.size() != 2) {
@@ -514,18 +542,17 @@ public class MessageListPanelEx {
                 String pkg = uri.getHost();
                 int resId = container.activity.getResources().getIdentifier(name, type, pkg);
                 if (resId != 0) {
-                    listviewBk.setBackgroundResource(resId);
+                    ivBackground.setBackgroundResource(resId);
                 }
             }
         } else if (color != 0) {
-            listviewBk.setBackgroundColor(color);
+            ivBackground.setBackgroundColor(color);
         }
     }
 
     /**
      * ***************************************** 数据加载 *********************************************
      */
-
     private class MessageLoader implements BaseFetchLoadAdapter.RequestLoadMoreListener, BaseFetchLoadAdapter.RequestFetchMoreListener {
 
         private int loadMsgCount = NimUIKitImpl.getOptions().messageCountLoadOnce;
@@ -545,6 +572,7 @@ public class MessageListPanelEx {
             } else {
                 if (anchor == null) {
                     loadFromLocal(QueryDirectionEnum.QUERY_OLD);
+                    mIsInitFetchingLocal = true;
                 } else {
                     loadAnchorContext(); // 加载指定anchor的上下文
                 }
@@ -554,6 +582,7 @@ public class MessageListPanelEx {
         private RequestCallback<List<IMMessage>> callback = new RequestCallbackWrapper<List<IMMessage>>() {
             @Override
             public void onResult(int code, List<IMMessage> messages, Throwable exception) {
+                mIsInitFetchingLocal = false;
                 if (code != ResponseCode.RES_SUCCESS || exception != null) {
                     if (direction == QueryDirectionEnum.QUERY_OLD) {
                         adapter.fetchMoreFailed();
@@ -573,28 +602,33 @@ public class MessageListPanelEx {
         private void loadAnchorContext() {
             // query new, auto load old
             direction = QueryDirectionEnum.QUERY_NEW;
-            NIMClient.getService(MsgService.class).queryMessageListEx(anchor(), direction, loadMsgCount, true)
+            NIMClient.getService(MsgService.class)
+                    .queryMessageListEx(anchor(), direction, loadMsgCount, true)
                     .setCallback(new RequestCallbackWrapper<List<IMMessage>>() {
                         @Override
                         public void onResult(int code, List<IMMessage> messages, Throwable exception) {
                             if (code != ResponseCode.RES_SUCCESS || exception != null) {
                                 return;
                             }
-
                             onAnchorContextMessageLoaded(messages);
                         }
                     });
         }
 
         private void loadFromLocal(QueryDirectionEnum direction) {
+            if (mIsInitFetchingLocal) {
+                return;
+            }
             this.direction = direction;
-            NIMClient.getService(MsgService.class).queryMessageListEx(anchor(), direction, loadMsgCount, true)
+            NIMClient.getService(MsgService.class)
+                    .queryMessageListEx(anchor(), direction, loadMsgCount, true)
                     .setCallback(callback);
         }
 
         private void loadFromRemote() {
             this.direction = QueryDirectionEnum.QUERY_OLD;
-            NIMClient.getService(MsgService.class).pullMessageHistory(anchor(), loadMsgCount, true)
+            NIMClient.getService(MsgService.class)
+                    .pullMessageHistory(anchor(), loadMsgCount, true)
                     .setCallback(callback);
         }
 
@@ -608,6 +642,7 @@ public class MessageListPanelEx {
         }
 
         private void onMessageLoaded(final List<IMMessage> messages) {
+
             if (messages == null) {
                 return;
             }
@@ -638,16 +673,17 @@ public class MessageListPanelEx {
             }
 
             // 在更新前，先确定一些标记
-            List<IMMessage> total = new ArrayList<>();
-            total.addAll(items);
+            List<IMMessage> total = new ArrayList<>(items);
             boolean isBottomLoad = direction == QueryDirectionEnum.QUERY_NEW;
             if (isBottomLoad) {
                 total.addAll(messages);
             } else {
                 total.addAll(0, messages);
             }
-            adapter.updateShowTimeItem(total, true, firstLoad); // 更新要显示时间的消息
-            updateReceipt(total); // 更新已读回执标签
+            // 更新要显示时间的消息
+            adapter.updateShowTimeItem(total, true, firstLoad);
+            // 更新已读回执标签
+            updateReceipt(total);
 
             // 加载状态修改,刷新界面
             if (isBottomLoad) {
@@ -768,7 +804,6 @@ public class MessageListPanelEx {
         // 重新下载(对话框提示)
         private void showReDownloadConfirmDlg(final IMMessage message) {
             EasyAlertDialogHelper.OnDialogActionListener listener = new EasyAlertDialogHelper.OnDialogActionListener() {
-
                 @Override
                 public void doCancelAction() {
                 }
@@ -851,6 +886,8 @@ public class MessageListPanelEx {
                 // 7 forward to team
                 longClickItemForwardToTeam(selectedItem, alertDialog);
             }
+            // 7 cancel upload attachment
+            longClickItemCancelUpload(selectedItem, alertDialog);
         }
 
         private boolean enableRevokeButton(IMMessage selectedItem) {
@@ -873,7 +910,6 @@ public class MessageListPanelEx {
                 return;
             }
             alertDialog.addItem(container.activity.getString(R.string.repeat_send_has_blank), new CustomAlertDialog.onSeparateItemClickListener() {
-
                 @Override
                 public void onClick() {
                     onResendMessageItem(item);
@@ -884,13 +920,12 @@ public class MessageListPanelEx {
         private void onResendMessageItem(IMMessage message) {
             int index = getItemIndex(message.getUuid());
             if (index >= 0) {
-                showResendConfirm(message, index); // 重发确认
+                showResendConfirm(message); // 重发确认
             }
         }
 
-        private void showResendConfirm(final IMMessage message, final int index) {
+        private void showResendConfirm(final IMMessage message) {
             EasyAlertDialogHelper.OnDialogActionListener listener = new EasyAlertDialogHelper.OnDialogActionListener() {
-
                 @Override
                 public void doCancelAction() {
                 }
@@ -907,10 +942,9 @@ public class MessageListPanelEx {
 
         // 长按菜单项--复制
         private void longClickItemCopy(final IMMessage item, CustomAlertDialog alertDialog, MsgTypeEnum msgType) {
-            if (msgType == MsgTypeEnum.text ||
-                    (msgType == MsgTypeEnum.robot && item.getAttachment() != null && !((RobotAttachment) item.getAttachment()).isRobotSend())) {
+            if (msgType == MsgTypeEnum.text
+                    || (msgType == MsgTypeEnum.robot && item.getAttachment() != null && !((RobotAttachment) item.getAttachment()).isRobotSend())) {
                 alertDialog.addItem(container.activity.getString(R.string.copy_has_blank), new CustomAlertDialog.onSeparateItemClickListener() {
-
                     @Override
                     public void onClick() {
                         onCopyMessageItem(item);
@@ -941,11 +975,9 @@ public class MessageListPanelEx {
         private void longClickItemVoidToText(final IMMessage item, CustomAlertDialog alertDialog, MsgTypeEnum msgType) {
             if (msgType != MsgTypeEnum.audio) return;
 
-            if (item.getDirect() == MsgDirectionEnum.In
-                    && item.getAttachStatus() != AttachStatusEnum.transferred)
+            if (item.getDirect() == MsgDirectionEnum.In && item.getAttachStatus() != AttachStatusEnum.transferred)
                 return;
-            if (item.getDirect() == MsgDirectionEnum.Out
-                    && item.getAttachStatus() != AttachStatusEnum.transferred)
+            if (item.getDirect() == MsgDirectionEnum.Out && item.getAttachStatus() != AttachStatusEnum.transferred)
                 return;
 
             alertDialog.addItem(container.activity.getString(R.string.voice_to_text), new CustomAlertDialog.onSeparateItemClickListener() {
@@ -971,7 +1003,9 @@ public class MessageListPanelEx {
 
         // 长按菜单项 -- 听筒扬声器切换
         private void longClickItemEarPhoneMode(CustomAlertDialog alertDialog, MsgTypeEnum msgType) {
-            if (msgType != MsgTypeEnum.audio) return;
+            if (msgType != MsgTypeEnum.audio) {
+                return;
+            }
 
             String content = UserPreferences.isEarPhoneModeEnable() ? "切换成扬声器播放" : "切换成听筒播放";
             final String finalContent = content;
@@ -979,7 +1013,7 @@ public class MessageListPanelEx {
 
                 @Override
                 public void onClick() {
-                    Toast.makeText(container.activity, finalContent, Toast.LENGTH_SHORT).show();
+                    ToastHelper.showToast(container.activity, finalContent);
                     setEarPhoneMode(!UserPreferences.isEarPhoneModeEnable(), true);
                 }
             });
@@ -1022,14 +1056,20 @@ public class MessageListPanelEx {
         // 长按菜单项 -- 撤回消息
         private void longClickRevokeMsg(final IMMessage item, CustomAlertDialog alertDialog) {
             alertDialog.addItem(container.activity.getString(R.string.withdrawn_msg), new CustomAlertDialog.onSeparateItemClickListener() {
-
                 @Override
                 public void onClick() {
                     if (!NetworkUtil.isNetAvailable(container.activity)) {
-                        Toast.makeText(container.activity, R.string.network_is_not_available, Toast.LENGTH_SHORT).show();
+                        ToastHelper.showToast(container.activity, R.string.network_is_not_available);
                         return;
                     }
-                    NIMClient.getService(MsgService.class).revokeMessage(item).setCallback(new RequestCallback<Void>() {
+                    Map<String, Object> payload = null;
+
+                    CustomPushContentProvider customConfig = NimUIKitImpl.getCustomPushContentProvider();
+                    if (customConfig != null) {
+                        payload = customConfig.getPushPayload(item);
+                    }
+//                    NIMClient.getService(MsgService.class).revokeMessage(item).setCallback(new RequestCallback<Void>() {
+                    NIMClient.getService(MsgService.class).revokeMessageEx(item, "撤回一条消息", payload).setCallback(new RequestCallback<Void>() {
                         @Override
                         public void onSuccess(Void param) {
                             deleteItem(item, false);
@@ -1039,9 +1079,9 @@ public class MessageListPanelEx {
                         @Override
                         public void onFailed(int code) {
                             if (code == ResponseCode.RES_OVERDUE) {
-                                Toast.makeText(container.activity, R.string.revoke_failed, Toast.LENGTH_SHORT).show();
+                                ToastHelper.showToast(container.activity, R.string.revoke_failed);
                             } else {
-                                Toast.makeText(container.activity, "revoke msg failed, code:" + code, Toast.LENGTH_SHORT).show();
+                                ToastHelper.showToast(container.activity, "revoke msg failed, code:" + code);
                             }
                         }
 
@@ -1054,7 +1094,28 @@ public class MessageListPanelEx {
             });
         }
 
+        // 长按-取消上传附件
+        private void longClickItemCancelUpload(final IMMessage selectedItem, CustomAlertDialog alertDialog) {
+            if (selectedItem.getDirect() != MsgDirectionEnum.Out) {
+                return;
+            }
+            MsgAttachment msgAttachment = selectedItem.getAttachment();
+            if (msgAttachment == null || !(msgAttachment instanceof FileAttachment)) {
+                return;
+            }
+            if (selectedItem.getAttachStatus() != AttachStatusEnum.transferring || selectedItem.getStatus() != MsgStatusEnum.sending) {
+                return;
+            }
+
+            alertDialog.addItem("取消上传", new CustomAlertDialog.onSeparateItemClickListener() {
+                @Override
+                public void onClick() {
+                    NIMClient.getService(MsgService.class).cancelUploadAttachment(selectedItem);
+                }
+            });
+        }
     }
+
 
     private void setEarPhoneMode(boolean earPhoneMode, boolean update) {
         if (update) {
@@ -1089,43 +1150,16 @@ public class MessageListPanelEx {
         return bitmap;
     }
 
-    private UserInfoObserver uinfoObserver;
-
-    private void registerUserInfoObserver() {
-        if (uinfoObserver == null) {
-            uinfoObserver = new UserInfoObserver() {
-                @Override
-                public void onUserInfoChanged(List<String> accounts) {
-                    if (container.sessionType == SessionTypeEnum.P2P) {
-                        if (accounts.contains(container.account) || accounts.contains(NimUIKit.getAccount())) {
-                            adapter.notifyDataSetChanged();
-                        }
-                    } else { // 群的，简单的全部重刷
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-            };
-        }
-
-        NimUIKit.getUserInfoObservable().registerObserver(uinfoObserver, true);
-    }
-
-    private void unregisterUserInfoObserver() {
-        if (uinfoObserver != null) {
-            NimUIKit.getUserInfoObservable().registerObserver(uinfoObserver, false);
-        }
-    }
 
     /**
      * 收到已读回执（更新VH的已读label）
      */
-
     public void receiveReceipt() {
         updateReceipt(items);
         refreshMessageList();
     }
 
-    public void updateReceipt(final List<IMMessage> messages) {
+    private void updateReceipt(final List<IMMessage> messages) {
         for (int i = messages.size() - 1; i >= 0; i--) {
             if (receiveReceiptCheck(messages.get(i))) {
                 adapter.setUuid(messages.get(i).getUuid());
@@ -1135,15 +1169,13 @@ public class MessageListPanelEx {
     }
 
     private boolean receiveReceiptCheck(final IMMessage msg) {
-        if (msg != null && msg.getSessionType() == SessionTypeEnum.P2P
+        return msg != null
+                && msg.getSessionType() == SessionTypeEnum.P2P
                 && msg.getDirect() == MsgDirectionEnum.Out
                 && msg.getMsgType() != MsgTypeEnum.tip
                 && msg.getMsgType() != MsgTypeEnum.notification
-                && msg.isRemoteRead()) {
-            return true;
-        }
+                && msg.isRemoteRead();
 
-        return false;
     }
 
     /**
@@ -1181,12 +1213,10 @@ public class MessageListPanelEx {
     }
 
     private boolean sendReceiptCheck(final IMMessage msg) {
-        if (msg == null || msg.getDirect() != MsgDirectionEnum.In ||
-                msg.getMsgType() == MsgTypeEnum.tip || msg.getMsgType() == MsgTypeEnum.notification) {
-            return false; // 非收到的消息，Tip消息和通知类消息，不要发已读回执
-        }
-
-        return true;
+        return msg != null
+                && msg.getDirect() == MsgDirectionEnum.In
+                && msg.getMsgType() != MsgTypeEnum.tip
+                && msg.getMsgType() != MsgTypeEnum.notification;
     }
 
     // 删除消息
@@ -1208,16 +1238,18 @@ public class MessageListPanelEx {
             return;
         }
         final ArrayList<String> selected = data.getStringArrayListExtra(ContactSelectActivity.RESULT_DATA);
-        if (selected != null && !selected.isEmpty()) {
-            switch (requestCode) {
-                case REQUEST_CODE_FORWARD_TEAM:
-                    doForwardMessage(selected.get(0), SessionTypeEnum.Team);
-                    break;
-                case REQUEST_CODE_FORWARD_PERSON:
-                    doForwardMessage(selected.get(0), SessionTypeEnum.P2P);
-                    break;
-            }
+        if (CommonUtil.isEmpty(selected)) {
+            return;
         }
+        switch (requestCode) {
+            case REQUEST_CODE_FORWARD_TEAM:
+                doForwardMessage(selected.get(0), SessionTypeEnum.Team);
+                break;
+            case REQUEST_CODE_FORWARD_PERSON:
+                doForwardMessage(selected.get(0), SessionTypeEnum.P2P);
+                break;
+        }
+
     }
 
     // 转发消息
@@ -1230,7 +1262,7 @@ public class MessageListPanelEx {
         }
 
         if (message == null) {
-            Toast.makeText(container.activity, "该类型不支持转发", Toast.LENGTH_SHORT).show();
+            ToastHelper.showToast(container.activity, "该类型不支持转发");
             return;
         }
 
@@ -1246,7 +1278,6 @@ public class MessageListPanelEx {
             if (robotAttachment.isRobotSend()) {
                 return null; // 机器人发的消息不能转发了
             }
-
             return MessageBuilder.createTextMessage(sessionId, sessionTypeEnum, forwardMessage.getContent());
         }
 

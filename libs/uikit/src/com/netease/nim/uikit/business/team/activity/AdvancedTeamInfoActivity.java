@@ -11,7 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.netease.nim.uikit.common.ToastHelper;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
@@ -502,7 +503,7 @@ public class AdvancedTeamInfoActivity extends UI implements
     }
 
     private void onGetTeamInfoFailed() {
-        Toast.makeText(this, getString(R.string.team_not_exist), Toast.LENGTH_SHORT).show();
+        ToastHelper.showToast(this, getString(R.string.team_not_exist));
         finish();
     }
 
@@ -515,7 +516,7 @@ public class AdvancedTeamInfoActivity extends UI implements
         this.team = t;
 
         if (team == null) {
-            Toast.makeText(this, getString(R.string.team_not_exist), Toast.LENGTH_SHORT).show();
+            ToastHelper.showToast(this, getString(R.string.team_not_exist));
             finish();
             return;
         } else {
@@ -794,8 +795,7 @@ public class AdvancedTeamInfoActivity extends UI implements
      */
     private void onTransferTeam() {
         if (memberAccounts.size() <= 1) {
-            Toast.makeText(AdvancedTeamInfoActivity.this, R.string.team_transfer_without_member, Toast.LENGTH_SHORT)
-                    .show();
+            ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.team_transfer_without_member);
             return;
         }
 
@@ -818,11 +818,12 @@ public class AdvancedTeamInfoActivity extends UI implements
      * @param accounts 邀请帐号
      */
     private void inviteMembers(ArrayList<String> accounts) {
-        NIMClient.getService(TeamService.class).addMembers(teamId, accounts).setCallback(new RequestCallback<List<String>>() {
+//        NIMClient.getService(TeamService.class).addMembers(teamId, accounts).setCallback(new RequestCallback<List<String>>() {
+        NIMClient.getService(TeamService.class).addMembersEx(teamId, accounts, "邀请附言", "邀请扩展字段").setCallback(new RequestCallback<List<String>>() {
             @Override
             public void onSuccess(List<String> failedAccounts) {
                 if (failedAccounts == null || failedAccounts.isEmpty()) {
-                    Toast.makeText(AdvancedTeamInfoActivity.this, "添加群成员成功", Toast.LENGTH_SHORT).show();
+                    ToastHelper.showToast(AdvancedTeamInfoActivity.this, "添加群成员成功");
                 } else {
                     TeamHelper.onMemberTeamNumOverrun(failedAccounts, AdvancedTeamInfoActivity.this);
                 }
@@ -831,9 +832,9 @@ public class AdvancedTeamInfoActivity extends UI implements
             @Override
             public void onFailed(int code) {
                 if (code == ResponseCode.RES_TEAM_INVITE_SUCCESS) {
-                    Toast.makeText(AdvancedTeamInfoActivity.this, R.string.team_invite_members_success, Toast.LENGTH_SHORT).show();
+                    ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.team_invite_members_success);
                 } else {
-                    Toast.makeText(AdvancedTeamInfoActivity.this, "invite members failed, code=" + code, Toast.LENGTH_SHORT).show();
+                    ToastHelper.showToast(AdvancedTeamInfoActivity.this, "invite members failed, code=" + code);
                     Log.e(TAG, "invite members failed, code=" + code);
                 }
             }
@@ -853,11 +854,11 @@ public class AdvancedTeamInfoActivity extends UI implements
     private void transferTeam(final String account) {
         TeamMember member = NimUIKit.getTeamProvider().getTeamMember(teamId, account);
         if (member == null) {
-            Toast.makeText(AdvancedTeamInfoActivity.this, "成员不存在", Toast.LENGTH_SHORT).show();
+            ToastHelper.showToast(AdvancedTeamInfoActivity.this, "成员不存在");
             return;
         }
         if (member.isMute()) {
-            Toast.makeText(AdvancedTeamInfoActivity.this, "该成员已被禁言，请先取消禁言", Toast.LENGTH_LONG).show();
+            ToastHelper.showToastLong(AdvancedTeamInfoActivity.this, "该成员已被禁言，请先取消禁言");
             return;
         }
         NIMClient.getService(TeamService.class).transferTeam(teamId, account, false)
@@ -866,12 +867,12 @@ public class AdvancedTeamInfoActivity extends UI implements
                     public void onSuccess(List<TeamMember> members) {
                         creator = account;
                         updateTeamMember(NimUIKit.getTeamProvider().getTeamMemberList(teamId));
-                        Toast.makeText(AdvancedTeamInfoActivity.this, R.string.team_transfer_success, Toast.LENGTH_SHORT).show();
+                        ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.team_transfer_success);
                     }
 
                     @Override
                     public void onFailed(int code) {
-                        Toast.makeText(AdvancedTeamInfoActivity.this, R.string.team_transfer_failed, Toast.LENGTH_SHORT).show();
+                        ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.team_transfer_failed);
                         Log.e(TAG, "team transfer failed, code=" + code);
                     }
 
@@ -891,7 +892,7 @@ public class AdvancedTeamInfoActivity extends UI implements
             @Override
             public void onSuccess(Void param) {
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(AdvancedTeamInfoActivity.this, R.string.quit_team_success, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.quit_team_success);
                 setResult(Activity.RESULT_OK, new Intent().putExtra(RESULT_EXTRA_REASON, RESULT_EXTRA_REASON_QUIT));
                 finish();
             }
@@ -899,7 +900,7 @@ public class AdvancedTeamInfoActivity extends UI implements
             @Override
             public void onFailed(int code) {
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(AdvancedTeamInfoActivity.this, R.string.quit_team_failed, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.quit_team_failed);
             }
 
             @Override
@@ -919,14 +920,14 @@ public class AdvancedTeamInfoActivity extends UI implements
             public void onSuccess(Void param) {
                 DialogMaker.dismissProgressDialog();
                 setResult(Activity.RESULT_OK, new Intent().putExtra(RESULT_EXTRA_REASON, RESULT_EXTRA_REASON_DISMISS));
-                Toast.makeText(AdvancedTeamInfoActivity.this, R.string.dismiss_team_success, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.dismiss_team_success);
                 finish();
             }
 
             @Override
             public void onFailed(int code) {
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(AdvancedTeamInfoActivity.this, R.string.dismiss_team_failed, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.dismiss_team_failed);
             }
 
             @Override
@@ -1128,14 +1129,13 @@ public class AdvancedTeamInfoActivity extends UI implements
             public void onSuccess(Void param) {
                 DialogMaker.dismissProgressDialog();
                 teamBusinessCard.setText(nickname);
-                Toast.makeText(AdvancedTeamInfoActivity.this, R.string.update_success, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.update_success);
             }
 
             @Override
             public void onFailed(int code) {
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code),
-                        Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code));
             }
 
             @Override
@@ -1177,14 +1177,14 @@ public class AdvancedTeamInfoActivity extends UI implements
             public void onSuccess(Void param) {
                 DialogMaker.dismissProgressDialog();
                 setAuthenticationText(type);
-                Toast.makeText(AdvancedTeamInfoActivity.this, R.string.update_success, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.update_success);
             }
 
             @Override
             public void onFailed(int code) {
                 authenDialog.undoLastSelect(); // 撤销选择
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code), Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code));
             }
 
             @Override
@@ -1225,14 +1225,14 @@ public class AdvancedTeamInfoActivity extends UI implements
             public void onSuccess(Void param) {
                 DialogMaker.dismissProgressDialog();
                 updateInviteText(type);
-                Toast.makeText(AdvancedTeamInfoActivity.this, R.string.update_success, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.update_success);
             }
 
             @Override
             public void onFailed(int code) {
                 inviteDialog.undoLastSelect(); // 撤销选择
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code), Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code));
             }
 
             @Override
@@ -1263,14 +1263,14 @@ public class AdvancedTeamInfoActivity extends UI implements
             public void onSuccess(Void param) {
                 DialogMaker.dismissProgressDialog();
                 updateInfoUpateText(type);
-                Toast.makeText(AdvancedTeamInfoActivity.this, R.string.update_success, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.update_success);
             }
 
             @Override
             public void onFailed(int code) {
                 teamInfoUpdateDialog.undoLastSelect(); // 撤销选择
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code), Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code));
             }
 
             @Override
@@ -1301,14 +1301,14 @@ public class AdvancedTeamInfoActivity extends UI implements
             public void onSuccess(Void param) {
                 DialogMaker.dismissProgressDialog();
                 updateBeInvitedText(type);
-                Toast.makeText(AdvancedTeamInfoActivity.this, R.string.update_success, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.update_success);
             }
 
             @Override
             public void onFailed(int code) {
                 teamInviteeDialog.undoLastSelect(); // 撤销选择
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code), Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code));
             }
 
             @Override
@@ -1426,14 +1426,14 @@ public class AdvancedTeamInfoActivity extends UI implements
                         @Override
                         public void onSuccess(Void param) {
                             DialogMaker.dismissProgressDialog();
-                            Toast.makeText(AdvancedTeamInfoActivity.this, R.string.update_success, Toast.LENGTH_SHORT).show();
+                            ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.update_success);
                             onUpdateDone();
                         }
 
                         @Override
                         public void onFailed(int code) {
                             DialogMaker.dismissProgressDialog();
-                            Toast.makeText(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code), Toast.LENGTH_SHORT).show();
+                            ToastHelper.showToast(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code));
                         }
 
                         @Override
@@ -1442,8 +1442,7 @@ public class AdvancedTeamInfoActivity extends UI implements
                         }
                     }); // 更新资料
                 } else {
-                    Toast.makeText(AdvancedTeamInfoActivity.this, R.string.team_update_failed, Toast
-                            .LENGTH_SHORT).show();
+                    ToastHelper.showToast(AdvancedTeamInfoActivity.this, R.string.team_update_failed);
                     onUpdateDone();
                 }
             }
@@ -1453,7 +1452,7 @@ public class AdvancedTeamInfoActivity extends UI implements
     private void cancelUpload(int resId) {
         if (uploadFuture != null) {
             uploadFuture.abort();
-            Toast.makeText(AdvancedTeamInfoActivity.this, resId, Toast.LENGTH_SHORT).show();
+            ToastHelper.showToast(AdvancedTeamInfoActivity.this, resId);
             onUpdateDone();
         }
     }
