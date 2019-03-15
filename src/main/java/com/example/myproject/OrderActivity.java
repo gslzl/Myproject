@@ -176,30 +176,22 @@ public class OrderActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.order_pay:
+                new_type = 0;
                 indenturl = "http://120.79.87.68:5000/getIndent";
                 type = 0;
                 break;
             case R.id.order_sell:
+                new_type = 1;
                 indenturl = "http://120.79.87.68:5000/getMyIndent";
                 type =1;
                 break;
             case R.id.all://竞拍中
-                if (type == 1) {
-                    new_type = 1;
-                }
-                else {
-                    new_type = 0;
-                }
+                new_type = type;
                 type_new = 0;
                 state = "0";
                 break;
             case R.id.order_ing://待付款
-                if (type == 1) {
-                    new_type = 1;
-                }
-                else {
-                    new_type = 0;
-                }
+                new_type = type;
                 type_new = 1;
                 state = "1";
                 break;
