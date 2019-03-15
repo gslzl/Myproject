@@ -67,7 +67,6 @@
         <activity
             android:name=".HomepageActivity"
             android:screenOrientation="portrait">
-
         </activity>
         <activity
             android:name=".LoginActivity"

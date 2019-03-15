@@ -34,7 +34,7 @@ public class OrderAdapter extends BaseQuickAdapter<IndentBean.indentBean, BaseVi
                 .into(picture);
         helper.setText(R.id.product_name,item.name);
         helper.setText(R.id.price_before,item.price);
-        helper.setText(R.id.price_now,item.current_price);
+        helper.setText(R.id.price_now,item.my_price);
         helper.setText(R.id.time_date,time[0]);
         helper.setText(R.id.time_clock,time[1]);
         helper.addOnClickListener(R.id.radioButton_topay);

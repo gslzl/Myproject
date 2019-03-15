@@ -31,6 +31,7 @@ public class OrderActivity extends AppCompatActivity {
     String state;
     String indenturl;
     String deleteurl;
+    String updataurl;
 
     RecyclerView order;
     OrderAdapter orderAdapter;
@@ -56,10 +57,12 @@ public class OrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         ButterKnife.inject(this);
-        state = "10";
+        state = "1";
 
         indenturl = "http://120.79.87.68:5000/getIndent";
         deleteurl = "http://120.79.87.68:5000/deleteIndent";
+        deleteurl = "http://120.79.87.68:5000/updataIndent";
+
         order = findViewById(R.id.order);
 
         orderAdapter = new OrderAdapter(R.layout.layout_order, indentBeans,this);
@@ -125,30 +128,29 @@ public class OrderActivity extends AppCompatActivity {
 
 
     public static int type =0;
+    public static int type_new =0;
     @OnClick({R.id.order_pay, R.id.order_sell, R.id.all, R.id.order_ing, R.id.order_deliver, R.id.order_finish})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.order_pay:
                 indenturl = "http://120.79.87.68:5000/getIndent";
-                orderDeliver.setText("待收货");
                 type = 0;
                 break;
             case R.id.order_sell:
                 indenturl = "http://120.79.87.68:5000/getMyIndent";
-                orderDeliver.setText("待发货");
                 type =1;
                 break;
             case R.id.all:
-                state = "10";
+                state = "1";
                 break;
             case R.id.order_ing:
                 state = "0";
                 break;
             case R.id.order_deliver:
-                state = "1";
+                state = "2";
                 break;
             case R.id.order_finish:
-                state = "2";
+                state = "3";
                 break;
         }
         getIndent();
