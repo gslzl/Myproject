@@ -131,6 +131,24 @@ public class HomeFragment extends Fragment {
         product.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         product.setAdapter(madapter);
 
+        madapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                OkGo.<String>post(infor)
+                        .params("ID", ID.get(position))
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                ProductBean productBean = new Gson().fromJson(response.body(), ProductBean.class);
+                                Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+                                intent.putExtra("productBean", productBean);
+                                startActivity(intent);
+
+                            }
+                        });
+            }
+        });
+
         infor = "http://120.79.87.68:5000/getProduct";
         inforUrl = "http://120.79.87.68:5000/getPageProduct";
         getUrl = "http://120.79.87.68:5000/getBanner";
@@ -147,6 +165,7 @@ public class HomeFragment extends Fragment {
             imgesID.clear();
             initBanner();
         }
+
 
         banner.setDelayTime(3000);
         banner.setImageLoader(new ImageLoader() {
@@ -234,23 +253,7 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 });
-        madapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                OkGo.<String>post(infor)
-                        .params("ID", ID.get(position))
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
-                                ProductBean productBean = new Gson().fromJson(response.body(), ProductBean.class);
-                                Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
-                                intent.putExtra("productBean", productBean);
-                                startActivity(intent);
 
-                            }
-                        });
-            }
-        });
 
     }
 

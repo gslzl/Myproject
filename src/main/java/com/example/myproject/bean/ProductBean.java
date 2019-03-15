@@ -33,6 +33,33 @@ public class ProductBean implements Serializable {
     public String message;
     public static class productBean implements Serializable{
         public String ID;
+        public String latitude;
+        public String longitude;
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
+        }
+
+        public String getStart_price() {
+            return start_price;
+        }
+
+        public void setStart_price(String start_price) {
+            this.start_price = start_price;
+        }
+
         public String name;
         public String user_ID;//发布的
         public String picture;
