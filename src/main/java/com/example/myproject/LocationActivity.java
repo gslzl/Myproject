@@ -41,9 +41,9 @@ public class LocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
-        Intent intent = getIntent();
-        double longitude=intent.getDoubleExtra("longitude",0);
-        double latitude = intent.getDoubleExtra("latitude",0);
+//        Intent intent = getIntent();
+//        double longitude=intent.getDoubleExtra("longitude",0);
+//        double latitude = intent.getDoubleExtra("latitude",0);
         isFirstLocate=0;
 
         mLocationClient = new LocationClient(this);
@@ -60,7 +60,7 @@ public class LocationActivity extends AppCompatActivity {
         baiduMap.setMyLocationEnabled(true);
         initLocationClientOption(option);
         mLocationClient.start();
-        setGoodsPos(latitude,longitude);
+//        setGoodsPos(latitude,longitude);
     }
 
 

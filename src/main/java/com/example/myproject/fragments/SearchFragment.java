@@ -2,7 +2,10 @@ package com.example.myproject.fragments;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -10,9 +13,12 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.example.myproject.HomepageActivity;
+import com.example.myproject.MyApp;
 import com.example.myproject.ProductDetailActivity;
 import com.example.myproject.R;
 import com.example.myproject.adapter.SearchAdapter;
@@ -24,6 +30,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,12 +52,31 @@ public class SearchFragment extends Fragment {
     @InjectView(R.id.search_new)
     SearchView searchNew;
 
+    private ImageView entranceAvatar;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search, container, false);
+        entranceAvatar = view.findViewById(R.id.head_image);
+
+        File file = new File(Environment.getExternalStorageDirectory(), MyApp.AVATAR_FILE_NAME);
+        if (file.exists()) {
+            entranceAvatar.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/" + MyApp.AVATAR_FILE_NAME));
+        }
+        entranceAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomepageActivity homepageActivity = (HomepageActivity) getActivity();
+                homepageActivity.openMenu();
+            }
+        });
+
+
+
+
         infor = "http://120.79.87.68:5000/getProduct";
         searchUrl = "http://120.79.87.68:5000/search";
         rv_search = view.findViewById(R.id.rv_search);
@@ -68,12 +94,12 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 OkGo.<String>post(searchUrl)
-                        .params("key_words",s)
+                        .params("key_words", s)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
-                                BannerBean bannerBean = new Gson().fromJson(response.body(),BannerBean.class);
-                                if(bannerBean.getCode().equals("1")){
+                                BannerBean bannerBean = new Gson().fromJson(response.body(), BannerBean.class);
+                                if (bannerBean.getCode().equals("1")) {
                                     searchBean.clear();
                                     searchBean.addAll(bannerBean.getData());
                                     searchAdapter.setNewData(searchBean);
@@ -96,8 +122,7 @@ public class SearchFragment extends Fragment {
                                                     });
                                         }
                                     });
-                                }
-                                else {
+                                } else {
                                     ToastUtils.showShort("无检索内容！");
                                     return;
                                 }
@@ -147,5 +172,10 @@ public class SearchFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    public void setEntranceAvatar(Bitmap bitmap) {
+        entranceAvatar.setImageBitmap(bitmap);
+
     }
 }
