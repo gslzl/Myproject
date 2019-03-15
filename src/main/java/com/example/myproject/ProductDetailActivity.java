@@ -20,13 +20,12 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.netease.nim.uikit.api.NimUIKit;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-import com.netease.nim.uikit.api.NimUIKit;
-
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

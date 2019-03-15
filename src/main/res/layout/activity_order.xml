@@ -106,7 +106,7 @@
                         android:drawableTop="@null"
                         android:fontFamily="@font/pingfang"
                         android:gravity="center"
-                        android:text="全部"
+                        android:text="竞拍中"
                         android:textColor="@drawable/selector_color_view"
                         android:checked="true"
                         android:textSize="15sp" />
@@ -120,7 +120,7 @@
                         android:drawableTop="@null"
                         android:fontFamily="@font/pingfang"
                         android:gravity="center"
-                        android:text="竞拍中"
+                        android:text="待付款"
                         android:textColor="@drawable/selector_color_view"
                         android:textSize="15sp" />
 
@@ -133,7 +133,7 @@
                         android:drawableTop="@null"
                         android:fontFamily="@font/pingfang"
                         android:gravity="center"
-                        android:text="待收货"
+                        android:text="发货中"
                         android:textColor="@drawable/selector_color_view"
                         android:textSize="15sp" />
 
