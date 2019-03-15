@@ -139,7 +139,7 @@ public class PublishActivity extends AppCompatActivity {
                         .params("catalog", getCategory(tvCategory.getText().toString()))
                         .params("information", etGoodsDesc.getText().toString())
                         .params("start_price", etStartPrice.getText().toString())
-                        .params("price", etPriceStep.getText().toString())
+                        .params("price", etOriPrice.getText().toString())
                         .params("scope", etPriceStep.getText().toString())
                         .params("end_time", etAuctionTimeLength.getText().toString())
                         .params("user_ID", SPUtils.getInstance().getString("str_login_number"))

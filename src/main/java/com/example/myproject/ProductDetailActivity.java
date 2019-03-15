@@ -118,7 +118,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         publishUserId=ProductBean.getData().user_ID;
         now_id = ProductBean.getData().getID();
-        now_price = ProductBean.getData().getCurrent_price();
+        now_price = Float.valueOf(ProductBean.getData().getCurrent_price())+Float.valueOf(ProductBean.getData().getStart_price())+"";
         now_range = ProductBean.getData().getScope();
 
         auction.setText(now_price);

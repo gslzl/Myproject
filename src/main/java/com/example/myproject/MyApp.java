@@ -37,7 +37,7 @@ public class MyApp extends Application {
         super.onCreate();
         Utils.init(this);
         OkGo.getInstance().init(this);
-        LoginInfo  loginInfo = new LoginInfo("15736506524","281ecb719ca162f91cf78d0e11b59356");
+        LoginInfo  loginInfo = new LoginInfo("17711388724","943533c774808bfd1888f7994db1d97f");
 
         NIMClient.init(this, loginInfo,null);
 
