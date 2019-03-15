@@ -66,6 +66,10 @@ public class ProductDetailActivity extends AppCompatActivity {
     String now_price;
     String now_range;
     String now_id;
+    String publishUserId;
+    double longitude;
+    double latitude;
+
     @InjectView(R.id.map)
     ImageView map;
 
@@ -109,7 +113,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         intro.setText(ProductBean.getData().getInformation());
         prime.setText(ProductBean.getData().getPrice());
 
+        latitude = Double.valueOf(ProductBean.getData().latitude);
+        longitude = Double.valueOf(ProductBean.getData().longitude);
 
+        publishUserId=ProductBean.getData().user_ID;
         now_id = ProductBean.getData().getID();
         now_price = ProductBean.getData().getCurrent_price();
         now_range = ProductBean.getData().getScope();
@@ -126,7 +133,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.connection:
-                NimUIKit.startP2PSession(this, "1771138872");
+                NimUIKit.startP2PSession(this, publishUserId);
                 break;
             case R.id.makeup:
                 OkGo.<String>post(makeup_url)
@@ -163,6 +170,11 @@ public class ProductDetailActivity extends AppCompatActivity {
                         });
                 break;
             case R.id.map:
+                Intent intent = new Intent(this,LocationActivity.class);
+                intent.putExtra("longitude",longitude);
+                intent.putExtra("latitude",latitude);
+                startActivity(intent);
+
                 break;
         }
     }
