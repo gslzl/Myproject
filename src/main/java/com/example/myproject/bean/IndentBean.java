@@ -44,6 +44,15 @@ public class IndentBean implements Serializable {
         public String information;
         public String product_state;//商品状态 0竞拍中 1拍卖结束
         public String state;//订单状态 0竞拍中 1待发货 2已完成
+        public String scope;//竞价幅度
+
+        public String getScope() {
+            return scope;
+        }
+
+        public void setScope(String scope) {
+            this.scope = scope;
+        }
 
         public String getPrice() {
             return price;

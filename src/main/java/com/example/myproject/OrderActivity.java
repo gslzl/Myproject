@@ -31,6 +31,9 @@ public class OrderActivity extends AppCompatActivity {
     String state;
     String indenturl;
     String deleteurl;
+    String updataurl;
+    String current_price;
+    String scope;
 
     RecyclerView order;
     OrderAdapter orderAdapter;
@@ -50,16 +53,20 @@ public class OrderActivity extends AppCompatActivity {
     List<IndentBean.indentBean> indentBeans = new ArrayList<>();
     List<IndentBean.indentBean> nullBeans = new ArrayList<>();
     List<String> ID = new ArrayList<>();
+    List<String> Current_price = new ArrayList<>();
+    List<String> Scope = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         ButterKnife.inject(this);
-        state = "10";
+        state = "0";
 
         indenturl = "http://120.79.87.68:5000/getIndent";
         deleteurl = "http://120.79.87.68:5000/deleteIndent";
+        updataurl = "http://120.79.87.68:5000/updataIndent";
+
         order = findViewById(R.id.order);
 
         orderAdapter = new OrderAdapter(R.layout.layout_order, indentBeans,this);
@@ -73,7 +80,42 @@ public class OrderActivity extends AppCompatActivity {
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.radioButton_topay:
-
+                        if (type_new==0) {
+                            OkGo.<String>post(updataurl)
+                                    .params("user_ID", SPUtils.getInstance().getString("str_login_number"))
+                                    .params("product_ID", ID.get(position))
+                                    .params("my_price", Float.valueOf(Current_price.get(position)) + Float.valueOf(Scope.get(position)))
+                                    .params("state", "0")
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onSuccess(Response<String> response) {
+                                            ResultMessage resultMessage = new Gson().fromJson(response.body(),ResultMessage.class);
+                                            if (resultMessage.getMessage().equals("success")) {
+                                                ToastUtils.showShort("加价成功");
+                                            }
+                                            else {
+                                                return;
+                                            }
+                                        }
+                                    });
+                        }else {
+                            OkGo.<String>post(updataurl)
+                                    .params("user_ID", SPUtils.getInstance().getString("str_login_number"))
+                                    .params("product_ID", ID.get(position))
+                                    .params("state", "2")
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onSuccess(Response<String> response) {
+                                            ResultMessage resultMessage = new Gson().fromJson(response.body(),ResultMessage.class);
+                                            if (resultMessage.getMessage().equals("success")) {
+                                                ToastUtils.showShort("支付成功");
+                                            }
+                                            else {
+                                                return;
+                                            }
+                                        }
+                                    });
+                        }
                         break;
                     case R.id.radioButton_exit:
                         OkGo.<String>post(deleteurl)
@@ -116,6 +158,9 @@ public class OrderActivity extends AppCompatActivity {
                             orderAdapter.setNewData(indentBeans);
                             for (IndentBean.indentBean element : indentBean.getData()) {
                                 ID.add(element.getProduct_ID());
+                                Current_price.add(element.getCurrent_price());
+                                Scope.add(element.getScope());
+
                             }
                         }
                     }
@@ -125,30 +170,38 @@ public class OrderActivity extends AppCompatActivity {
 
 
     public static int type =0;
+    public static int type_new =0;
+    public static int new_type =0;
     @OnClick({R.id.order_pay, R.id.order_sell, R.id.all, R.id.order_ing, R.id.order_deliver, R.id.order_finish})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.order_pay:
+                new_type = 0;
                 indenturl = "http://120.79.87.68:5000/getIndent";
-                orderDeliver.setText("待收货");
                 type = 0;
                 break;
             case R.id.order_sell:
+                new_type = 1;
                 indenturl = "http://120.79.87.68:5000/getMyIndent";
-                orderDeliver.setText("待发货");
                 type =1;
                 break;
-            case R.id.all:
-                state = "10";
-                break;
-            case R.id.order_ing:
+            case R.id.all://竞拍中
+                new_type = type;
+                type_new = 0;
                 state = "0";
                 break;
-            case R.id.order_deliver:
+            case R.id.order_ing://待付款
+                new_type = type;
+                type_new = 1;
                 state = "1";
                 break;
-            case R.id.order_finish:
+            case R.id.order_deliver:
+                new_type = 1;
                 state = "2";
+                break;
+            case R.id.order_finish:
+                new_type = 1;
+                state = "3";
                 break;
         }
         getIndent();

@@ -34,6 +34,7 @@ public class OrderAdapter extends BaseQuickAdapter<IndentBean.indentBean, BaseVi
                 .into(picture);
         helper.setText(R.id.product_name,item.name);
         helper.setText(R.id.price_before,item.price);
+        helper.setText(R.id.my_price,item.my_price);
         helper.setText(R.id.price_now,item.current_price);
         helper.setText(R.id.time_date,time[0]);
         helper.setText(R.id.time_clock,time[1]);
@@ -44,13 +45,29 @@ public class OrderAdapter extends BaseQuickAdapter<IndentBean.indentBean, BaseVi
             helper.getView(R.id.radioButton_topay).setVisibility(View.INVISIBLE);
             helper.getView(R.id.radioButton_exit).setVisibility(View.INVISIBLE);
             helper.getView(R.id.wait).setVisibility(View.INVISIBLE);
+            helper.getView(R.id.my).setVisibility(View.INVISIBLE);
         }else{
             helper.getView(R.id.radioButton_topay).setVisibility(View.VISIBLE);
             helper.getView(R.id.wait).setVisibility(View.VISIBLE);
             helper.getView(R.id.radioButton_exit).setVisibility(View.VISIBLE);
+            helper.getView(R.id.my).setVisibility(View.VISIBLE);
         }
-
-
+        if (OrderActivity.type_new==0) {
+            helper.setText(R.id.radioButton_topay,"去加价");
+        }
+        else {
+            helper.setText(R.id.radioButton_topay,"去支付");
+        }
+        if (OrderActivity.new_type==1) {
+            helper.getView(R.id.radioButton_topay).setVisibility(View.INVISIBLE);
+            helper.getView(R.id.radioButton_exit).setVisibility(View.INVISIBLE);
+            helper.getView(R.id.wait).setVisibility(View.INVISIBLE);
+        }
+        else {
+            helper.getView(R.id.radioButton_topay).setVisibility(View.VISIBLE);
+            helper.getView(R.id.radioButton_exit).setVisibility(View.VISIBLE);
+            helper.getView(R.id.wait).setVisibility(View.VISIBLE);
+        }
     }
 
 }
