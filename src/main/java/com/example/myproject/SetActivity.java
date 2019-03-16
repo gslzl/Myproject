@@ -43,8 +43,7 @@ public class SetActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.return_1:
-                final Intent intent =new Intent(this,HomepageActivity.class);
-                startActivity(intent);
+                finish();
                 break;
             case R.id.personal:
                 OkGo.<String>post(infor_user)

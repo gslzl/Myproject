@@ -65,8 +65,7 @@ public class PersonalActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_personal:
-                Intent intent_set = new Intent(this, SetActivity.class);
-                startActivity(intent_set);
+                finish();
                 break;
             case R.id.personal_change:
                 str_addresss = address.getText().toString().trim();

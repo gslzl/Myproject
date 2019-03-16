@@ -33,7 +33,7 @@ public class BrvahAdapter extends BaseQuickAdapter<BannerBean.bannerBean, BaseVi
                 .into(picture);
         helper.setText(R.id.tl_information,item.name);
         helper.setText(R.id.number,item.person_number);
-        helper.setText(R.id.price,item.current_price);
+        helper.setText(R.id.price,Float.valueOf(item.current_price)+Float.valueOf(item.start_price)+"");
 
         if (now_state.equals("1")) {
             show_state = "已结束";

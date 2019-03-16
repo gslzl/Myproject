@@ -48,8 +48,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
-                Intent intent = new Intent(this,SetActivity.class);
-                startActivity(intent);
+                finish();
                 break;
             case R.id.true_change:
                 str_newPassword = newPassword.getText().toString().trim();

@@ -67,6 +67,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     String now_range;
     String now_id;
     String publishUserId;
+    String start_price;
     double longitude;
     double latitude;
 
@@ -118,7 +119,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         publishUserId=ProductBean.getData().user_ID;
         now_id = ProductBean.getData().getID();
-        now_price = ProductBean.getData().getCurrent_price();
+        now_price = Float.valueOf(ProductBean.getData().getCurrent_price())+Float.valueOf(ProductBean.getData().getStart_price())+"";
+        start_price = ProductBean.getData().getStart_price();
         now_range = ProductBean.getData().getScope();
 
         auction.setText(now_price);
@@ -139,7 +141,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 OkGo.<String>post(makeup_url)
                         .params("user_ID", SPUtils.getInstance().getString("str_login_number"))
                         .params("product_ID", now_id)
-                        .params("my_price", Float.valueOf(now_price) + Float.valueOf(now_range))
+                        .params("my_price", Float.valueOf(now_price) + Float.valueOf(now_range)-Float.valueOf(start_price))
                         .params("state", "0")
                         .execute(new StringCallback() {
                             @Override

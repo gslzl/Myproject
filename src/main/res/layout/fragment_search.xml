@@ -3,28 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-        <include layout="@layout/layout_avatar" />
-        <include layout="@layout/layout_searchview" />
-        </RelativeLayout>
-        <android.support.v7.widget.CardView
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="40dp">
+            <include layout="@layout/layout_avatar" />
+            <include layout="@layout/layout_searchview" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:elevation="20dp"
+        android:orientation="vertical"
+        app:cardCornerRadius="20dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="15dp"
-            app:cardCornerRadius="20dp"
-            android:elevation="20dp"
-            android:orientation="vertical">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingBottom="70dp">
-                </android.support.v7.widget.RecyclerView>
-        </android.support.v7.widget.CardView>
+            android:paddingBottom="70dp"></android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.CardView>
 </LinearLayout>
