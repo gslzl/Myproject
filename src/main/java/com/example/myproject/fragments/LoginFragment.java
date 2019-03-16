@@ -140,6 +140,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onSuccess(LoginInfo param) {
                         startActivity(new Intent(getActivity(),HomepageActivity.class));
+                        getActivity().finish();
                     }
 
                     @Override
